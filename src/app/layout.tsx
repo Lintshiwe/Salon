@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground';
@@ -14,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
