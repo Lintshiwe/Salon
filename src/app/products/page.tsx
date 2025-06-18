@@ -1,0 +1,24 @@
+import { AppShell } from '@/components/layout/AppShell';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { ProductItem } from '@/components/products/ProductItem';
+import { products } from '@/data/mockData';
+
+export default function ProductsPage() {
+  return (
+    <AppShell>
+      <PageHeader 
+        title="Shop Our Glam Essentials"
+        description="Bring the Born@Beautiful experience home with our handpicked selection of premium beauty products. Shine bright every day!"
+      />
+      <div className="container py-12 md:py-16">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 content-animate-in">
+          {products.map((product, index) => (
+             <div key={product.id} style={{ animationDelay: `${index * 100}ms` }} className="animate-in fade-in slide-in-from-bottom-5 duration-500 ease-out">
+              <ProductItem product={product} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </AppShell>
+  );
+}
