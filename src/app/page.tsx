@@ -25,7 +25,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8 content-animate-in">
             {featuredServices.map((service) => (
-              <Card key={service.id} className="overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 bg-card">
+              <Card key={service.id} className="overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 ease-out transform hover:-translate-y-1 bg-card">
                 <CardHeader className="p-0">
                   <Image 
                     src={`https://placehold.co/600x400.png`}
@@ -65,7 +65,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8 content-animate-in">
             {featuredProducts.map((product) => (
-              <Card key={product.id} className="overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 bg-card">
+              <Card key={product.id} className="overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 ease-out transform hover:-translate-y-1 bg-card">
                 <CardHeader className="p-0">
                   <Image 
                     src={`https://placehold.co/600x400.png`}

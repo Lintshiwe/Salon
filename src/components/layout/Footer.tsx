@@ -22,20 +22,20 @@ export function Footer() {
           <div className="flex flex-col items-center">
             <h3 className="font-headline text-xl text-primary mb-3">Quick Links</h3>
             <ul className="space-y-2 text-center">
-              <li><Link href="/services" className="hover:text-primary transition-colors sparkle-hover">Services</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors sparkle-hover">Products</Link></li>
-              <li><Link href="/gallery" className="hover:text-primary transition-colors sparkle-hover">Gallery</Link></li>
-              <li><Link href="/stylists" className="hover:text-primary transition-colors sparkle-hover">Stylists</Link></li>
-              <li><Link href="/contact" className="hover:text-primary transition-colors sparkle-hover">Contact</Link></li>
+              <li><Link href="/services" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Services</Link></li>
+              <li><Link href="/products" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Products</Link></li>
+              <li><Link href="/gallery" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Gallery</Link></li>
+              <li><Link href="/stylists" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Stylists</Link></li>
+              <li><Link href="/contact" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Contact</Link></li>
             </ul>
           </div>
 
           <div className="flex flex-col items-center md:items-end">
             <h3 className="font-headline text-xl text-primary mb-3">Follow Us</h3>
             <div className="flex space-x-4">
-              <Link href="#" aria-label="Facebook" className="text-secondary-foreground hover:text-primary transition-all hover:scale-110 sparkle-hover p-2"><Facebook size={28} /></Link>
-              <Link href="#" aria-label="Instagram" className="text-secondary-foreground hover:text-primary transition-all hover:scale-110 sparkle-hover p-2"><Instagram size={28} /></Link>
-              <Link href="#" aria-label="Twitter" className="text-secondary-foreground hover:text-primary transition-all hover:scale-110 sparkle-hover p-2"><Twitter size={28} /></Link>
+              <Link href="#" aria-label="Facebook" className="text-secondary-foreground hover:text-primary transition-all duration-300 ease-out hover:scale-110 sparkle-hover p-2"><Facebook size={28} /></Link>
+              <Link href="#" aria-label="Instagram" className="text-secondary-foreground hover:text-primary transition-all duration-300 ease-out hover:scale-110 sparkle-hover p-2"><Instagram size={28} /></Link>
+              <Link href="#" aria-label="Twitter" className="text-secondary-foreground hover:text-primary transition-all duration-300 ease-out hover:scale-110 sparkle-hover p-2"><Twitter size={28} /></Link>
             </div>
           </div>
         </div>
