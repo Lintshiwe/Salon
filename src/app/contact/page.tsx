@@ -1,10 +1,11 @@
-"use client"; // Required for useSearchParams
+
+"use client"; 
 
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ContactFormComponent } from '@/components/contact/ContactForm';
 import { useSearchParams } from 'next/navigation';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, CreditCard } from 'lucide-react';
 
 export default function ContactPage() {
   const searchParams = useSearchParams();
@@ -48,6 +49,16 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-2xl font-semibold text-primary mb-1">Email Us</h3>
                 <p className="text-lg text-foreground/80">hello@bornatbeautiful.com</p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4 p-6 bg-primary/10 rounded-lg shadow-md border border-primary/30">
+              <CreditCard className="h-10 w-10 text-primary mt-1 shrink-0" />
+              <div>
+                <h3 className="text-2xl font-semibold text-primary mb-1">Payment Info</h3>
+                <p className="text-lg text-foreground/80">
+                  We gladly accept cash payments for all our magical services and products.
+                </p>
               </div>
             </div>
           </div>

@@ -111,6 +111,10 @@ export default {
         'subtle-pulse': {
           '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
           '50%': { transform: 'scale(1.15)', opacity: '1' },
+        },
+        'magical-pulse': { /* Renamed from subtle-pulse for clarity */
+          '0%, 100%': { transform: 'scale(1) rotate(0deg)', opacity: '0.7' },
+          '50%': { transform: 'scale(1.2) rotate(5deg)', opacity: '1' },
         }
       },
       animation: {
@@ -120,6 +124,7 @@ export default {
         'shake': 'shake 0.6s cubic-bezier(.36,.07,.19,.97) both',
         'dance': 'dance 0.8s ease-in-out',
         'subtle-pulse': 'subtle-pulse 0.3s ease-out',
+        'magical-pulse': 'magical-pulse 2s infinite ease-in-out alternate',
       },
     },
   },
