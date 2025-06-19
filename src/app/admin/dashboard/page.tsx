@@ -2,7 +2,7 @@
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2, PlusCircle, ListChecks, UserCheck } from 'lucide-react';
+import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2, PlusCircle, ListChecks, UserCheck, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
@@ -129,8 +129,8 @@ export default function AdminDashboardPage() {
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-3">
                     <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
-                        <Link href="/admin/services/add">
-                            <PlusCircle className="mr-3 h-5 w-5 group-hover:animate-pulse"/> Add New Service
+                        <Link href="/admin/services/list">
+                            <Settings className="mr-3 h-5 w-5 group-hover:animate-pulse"/> Manage Services
                         </Link>
                     </Button>
                     <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
