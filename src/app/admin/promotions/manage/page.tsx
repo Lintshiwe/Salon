@@ -3,8 +3,8 @@ import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Announce } from 'lucide-react'; // Using Announce as a placeholder for promotions
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { ArrowLeft, Megaphone } from 'lucide-react'; // Changed Announce to Megaphone
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function ManagePromotionsPage() {
   return (
@@ -16,7 +16,7 @@ export default function ManagePromotionsPage() {
       <div className="container py-12 md:py-16 text-center content-animate-in">
         <Card className="max-w-2xl mx-auto shadow-xl border-primary/30 bg-card">
             <CardHeader>
-                <Announce className="h-16 w-16 mx-auto text-primary mb-6 animate-pulse"/>
+                <Megaphone className="h-16 w-16 mx-auto text-primary mb-6 animate-pulse"/>
                 <CardTitle className="text-3xl font-headline text-primary">Promotion Management Coming Soon!</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 text-lg text-foreground/80">
@@ -42,5 +42,3 @@ export default function ManagePromotionsPage() {
   );
 }
 
-// Using a generic Announce icon as Lucide doesn't have a specific "promotion" or "megaphone" icon easily discoverable.
-// If you have a preferred icon or custom SVG, it could be used here.
