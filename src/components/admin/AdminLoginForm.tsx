@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(3, { message: "Password must be at least 3 characters." }), // Changed min to 3 for 'admin'
+  password: z.string().min(3, { message: "Password must be at least 3 characters." }),
 });
 
 type LoginFormValues = z.infer<typeof formSchema>;
@@ -47,7 +47,7 @@ export function AdminLoginForm() {
 
   async function onSubmit(data: LoginFormValues) {
     setLoginStatus("submitting");
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500)); 
 
     if (data.email === "admin@admin.com" && data.password === "admin") {
       setLoginStatus("success");
@@ -144,7 +144,7 @@ export function AdminLoginForm() {
                     <div className="relative">
                       <Input 
                         type={showPassword ? "text" : "password"} 
-                        placeholder="••••••••" 
+                        placeholder="admin" 
                         {...field} 
                         className={cn("text-lg py-6 pr-12 focus:border-primary focus:ring-primary", loginStatus === 'error' && 'border-destructive focus:border-destructive focus:ring-destructive')}
                         disabled={loginStatus === 'submitting' || loginStatus === 'success'}
