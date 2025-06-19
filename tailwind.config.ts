@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -94,12 +95,31 @@ export default {
         'sparkle-pulse': {
           '0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
           '50%': { transform: 'scale(1.5)', opacity: '1' },
+        },
+        'shake': {
+          '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+          '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+          '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+          '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
+        },
+        'dance': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg) scale(1)' },
+          '25%': { transform: 'translateY(-10px) rotate(-3deg) scale(1.05)' },
+          '50%': { transform: 'translateY(0) rotate(0deg) scale(1)' },
+          '75%': { transform: 'translateY(-5px) rotate(3deg) scale(1.02)' },
+        },
+        'subtle-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
+          '50%': { transform: 'scale(1.15)', opacity: '1' },
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'sparkle-pulse': 'sparkle-pulse 1s infinite ease-in-out alternate',
+        'shake': 'shake 0.6s cubic-bezier(.36,.07,.19,.97) both',
+        'dance': 'dance 0.8s ease-in-out',
+        'subtle-pulse': 'subtle-pulse 0.3s ease-out',
       },
     },
   },

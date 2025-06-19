@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Lock, LogIn } from "lucide-react";
+import { Lock, LogIn, Eye, EyeOff, ShieldAlert, PartyPopper, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -24,8 +28,15 @@ const formSchema = z.object({
 
 type LoginFormValues = z.infer<typeof formSchema>;
 
+type LoginStatus = "idle" | "submitting" | "error" | "success";
+
 export function AdminLoginForm() {
   const { toast } = useToast();
+  const router = useRouter();
+  const [loginStatus, setLoginStatus] = useState<LoginStatus>("idle");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordToggleAnimating, setIsPasswordToggleAnimating] = useState(false);
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,25 +46,71 @@ export function AdminLoginForm() {
   });
 
   async function onSubmit(data: LoginFormValues) {
-    // Simulate API call for login
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("Admin login attempt:", data);
-    // In a real app, you would handle authentication here
-    toast({
-      title: "Login Attempted",
-      description: "This is a demo. No actual login occurred.",
-      variant: "default",
-      className: "bg-primary text-primary-foreground"
-    });
+    setLoginStatus("submitting");
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
+
+    if (data.email === "admin@bornatbeautiful.com" && data.password === "password123") {
+      setLoginStatus("success");
+      toast({
+        title: "Login Successful! 🎉",
+        description: "Redirecting to your dashboard...",
+        className: "bg-green-500 text-white border-green-600",
+      });
+      setTimeout(() => {
+        router.push("/admin/dashboard");
+      }, 2000); // Allow time for "dance" animation
+    } else {
+      setLoginStatus("error");
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: "Invalid email or password. The website is mad!",
+      });
+      form.setError("root", { message: "Invalid credentials" });
+      setTimeout(() => {
+        // Reset to idle after error animation and message
+        if (loginStatus === 'error') setLoginStatus("idle");
+      }, 2000); // Match shake animation duration + buffer
+    }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+    setIsPasswordToggleAnimating(true);
+    setTimeout(() => setIsPasswordToggleAnimating(false), 300); // Duration of pulse animation
+  };
+
+  const MainIcon = () => {
+    if (loginStatus === 'error') return <ShieldAlert className="h-12 w-12 mx-auto text-destructive mb-4" />;
+    if (loginStatus === 'success') return <PartyPopper className="h-12 w-12 mx-auto text-green-500 mb-4 animate-bounce" />;
+    if (loginStatus === 'submitting') return <Loader2 className="h-12 w-12 mx-auto text-primary mb-4 animate-spin" />;
+    return <Lock className="h-12 w-12 mx-auto text-primary mb-4" />;
+  };
+  
+  const cardDescriptionText = () => {
+    if (loginStatus === 'error') return "Oops! Wrong credentials. Try again!";
+    if (loginStatus === 'success') return "Welcome back, Admin! Get ready to dazzle!";
+    if (loginStatus === 'submitting') return "Checking your credentials...";
+    return "Please enter your credentials to continue.";
+  };
+
+
   return (
-    <Card className="w-full max-w-md mx-auto shadow-2xl border-primary/50 bg-card">
+    <Card className={cn(
+      "w-full max-w-md mx-auto shadow-2xl bg-card transition-all duration-500 ease-out",
+      loginStatus === 'error' && 'border-destructive animate-shake',
+      loginStatus === 'success' && 'border-green-500 animate-dance',
+      loginStatus !== 'error' && loginStatus !== 'success' && 'border-primary/50'
+    )}>
       <CardHeader className="text-center">
-        <Lock className="h-12 w-12 mx-auto text-primary mb-4" />
+        <MainIcon />
         <CardTitle className="font-headline text-4xl text-primary">Admin Access</CardTitle>
-        <CardDescription className="text-lg text-foreground/70">
-          Please enter your credentials to continue.
+        <CardDescription className={cn(
+            "text-lg text-foreground/70",
+            loginStatus === 'error' && 'text-destructive',
+            loginStatus === 'success' && 'text-green-600'
+          )}>
+          {cardDescriptionText()}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -66,7 +123,13 @@ export function AdminLoginForm() {
                 <FormItem>
                   <FormLabel className="text-lg text-accent">Email Address</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="admin@bornatbeautiful.com" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
+                    <Input 
+                      type="email" 
+                      placeholder="admin@bornatbeautiful.com" 
+                      {...field} 
+                      className={cn("text-lg py-6 focus:border-primary focus:ring-primary", loginStatus === 'error' && 'border-destructive focus:border-destructive focus:ring-destructive')}
+                      disabled={loginStatus === 'submitting' || loginStatus === 'success'}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,15 +142,46 @@ export function AdminLoginForm() {
                 <FormItem>
                   <FormLabel className="text-lg text-accent">Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
+                    <div className="relative">
+                      <Input 
+                        type={showPassword ? "text" : "password"} 
+                        placeholder="••••••••" 
+                        {...field} 
+                        className={cn("text-lg py-6 pr-12 focus:border-primary focus:ring-primary", loginStatus === 'error' && 'border-destructive focus:border-destructive focus:ring-destructive')}
+                        disabled={loginStatus === 'submitting' || loginStatus === 'success'}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={togglePasswordVisibility}
+                        className={cn(
+                          "absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary",
+                          isPasswordToggleAnimating && "animate-subtle-pulse"
+                        )}
+                        disabled={loginStatus === 'submitting' || loginStatus === 'success'}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Logging In..." : "Log In"}
-               {!form.formState.isSubmitting && <LogIn className="ml-3 h-6 w-6 group-hover:rotate-12 transition-transform" />}
+             {form.formState.errors.root && (
+              <p className="text-sm font-medium text-destructive text-center">{form.formState.errors.root.message}</p>
+            )}
+            <Button 
+              type="submit" 
+              size="lg" 
+              className="w-full text-xl py-7 sparkle-hover group" 
+              disabled={loginStatus === 'submitting' || loginStatus === 'success'}
+            >
+              {loginStatus === 'submitting' && <><Loader2 className="mr-2 h-6 w-6 animate-spin" /> Logging In...</>}
+              {loginStatus === 'success' && <><PartyPopper className="mr-2 h-6 w-6" /> Success!</>}
+              {loginStatus !== 'submitting' && loginStatus !== 'success' && <><LogIn className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" /> Log In</>}
             </Button>
           </form>
         </Form>
