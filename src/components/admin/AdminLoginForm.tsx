@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  password: z.string().min(3, { message: "Password must be at least 3 characters." }), // Changed min to 3 for 'admin'
 });
 
 type LoginFormValues = z.infer<typeof formSchema>;
@@ -49,7 +49,7 @@ export function AdminLoginForm() {
     setLoginStatus("submitting");
     await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
 
-    if (data.email === "admin@bornatbeautiful.com" && data.password === "password123") {
+    if (data.email === "admin@admin.com" && data.password === "admin") {
       setLoginStatus("success");
       toast({
         title: "Login Successful! 🎉",
@@ -58,7 +58,7 @@ export function AdminLoginForm() {
       });
       setTimeout(() => {
         router.push("/admin/dashboard");
-      }, 2000); // Allow time for "dance" animation
+      }, 2000); 
     } else {
       setLoginStatus("error");
       toast({
@@ -68,16 +68,15 @@ export function AdminLoginForm() {
       });
       form.setError("root", { message: "Invalid credentials" });
       setTimeout(() => {
-        // Reset to idle after error animation and message
         if (loginStatus === 'error') setLoginStatus("idle");
-      }, 2000); // Match shake animation duration + buffer
+      }, 2000);
     }
   }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
     setIsPasswordToggleAnimating(true);
-    setTimeout(() => setIsPasswordToggleAnimating(false), 300); // Duration of pulse animation
+    setTimeout(() => setIsPasswordToggleAnimating(false), 300); 
   };
 
   const MainIcon = () => {
@@ -125,7 +124,7 @@ export function AdminLoginForm() {
                   <FormControl>
                     <Input 
                       type="email" 
-                      placeholder="admin@bornatbeautiful.com" 
+                      placeholder="admin@admin.com" 
                       {...field} 
                       className={cn("text-lg py-6 focus:border-primary focus:ring-primary", loginStatus === 'error' && 'border-destructive focus:border-destructive focus:ring-destructive')}
                       disabled={loginStatus === 'submitting' || loginStatus === 'success'}

@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,7 @@ export function ServiceItem({ service }: ServiceItemProps) {
       </CardContent>
       <CardFooter className="p-6 pt-0">
         <Button asChild variant="outline" className="w-full text-lg py-6 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 group/button">
-          <Link href={`/contact?service=${encodeURIComponent(service.name)}`}>
+          <Link href={`/booking?service=${encodeURIComponent(service.name)}&price=${encodeURIComponent(service.price)}&duration=${encodeURIComponent(service.duration || '')}`}>
             Book This Service <ArrowRight className="ml-2 h-5 w-5 group-hover/button:translate-x-1 transition-transform"/>
           </Link>
         </Button>
