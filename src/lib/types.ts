@@ -13,6 +13,7 @@ export interface Product {
   description: string;
   price: string;
   category: string;
+  stockStatus: 'In Stock' | 'Out of Stock';
   imageHint: string;
 }
 
@@ -35,4 +36,13 @@ export interface NavItem {
   label: string;
   href: string;
   icon?: React.ElementType;
+}
+
+export interface Booking {
+  id: string;
+  serviceName: string;
+  clientName: string;
+  date: string;
+  time: string;
+  status: 'Confirmed' | 'Pending' | 'Completed' | 'Cancelled';
 }

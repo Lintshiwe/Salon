@@ -3,14 +3,17 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import type { Product } from '@/lib/types';
-import { ShoppingBag, Sparkles } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ShoppingBag, Sparkles, PackageX } from 'lucide-react';
 
 interface ProductItemProps {
   product: Product;
 }
 
 export function ProductItem({ product }: ProductItemProps) {
-  const displayPrice = product.price.startsWith('R') ? product.price : `R${product.price.replace('$', '')}`;
+  const displayPrice = product.price.startsWith('R') ? product.price : `R${product.price}`;
+  const isOutOfStock = product.stockStatus === 'Out of Stock';
+
   return (
     <Card className="flex flex-col overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-card h-full sparkle-hover group">
       <CardHeader className="p-0 relative">
@@ -25,6 +28,9 @@ export function ProductItem({ product }: ProductItemProps) {
         <div className="absolute top-2 right-2 bg-accent text-accent-foreground p-2 rounded-bl-lg rounded-tr-md shadow-md">
             <ShoppingBag className="h-5 w-5"/>
         </div>
+        {isOutOfStock && (
+          <Badge variant="destructive" className="absolute top-2 left-2 text-sm px-3 py-1.5">Out of Stock</Badge>
+        )}
       </CardHeader>
       <CardContent className="p-6 flex-grow">
         <CardTitle className="text-2xl lg:text-3xl font-semibold text-accent mb-2 group-hover:text-primary transition-colors">{product.name}</CardTitle>
@@ -33,8 +39,12 @@ export function ProductItem({ product }: ProductItemProps) {
         <p className="text-3xl font-bold text-primary mt-auto">{displayPrice}</p>
       </CardContent>
       <CardFooter className="p-6 pt-0">
-        <Button className="w-full text-lg py-6 group/button sparkle-hover transition-all duration-300 ease-out">
-          Add to Bag <Sparkles className="ml-2 h-5 w-5 group-hover/button:animate-sparkle-pulse"/>
+        <Button 
+          className="w-full text-lg py-6 group/button sparkle-hover transition-all duration-300 ease-out"
+          disabled={isOutOfStock}
+        >
+          {isOutOfStock ? 'Out of Stock' : 'Add to Bag'}
+          {isOutOfStock ? <PackageX className="ml-2 h-5 w-5"/> : <Sparkles className="ml-2 h-5 w-5 group-hover/button:animate-sparkle-pulse"/>}
         </Button>
       </CardFooter>
     </Card>

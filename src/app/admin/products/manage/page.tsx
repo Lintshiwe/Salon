@@ -1,35 +1,152 @@
 
+"use client";
+
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { products as initialProducts } from '@/data/mockData';
+import type { Product } from '@/lib/types';
 import Link from 'next/link';
-import { ArrowLeft, PackageSearch } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowLeft, Edit3, PackageCheck, PackageX, Eye } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from 'react';
 
 export default function ManageProductsPage() {
+  const { toast } = useToast();
+  // In a real app, this state would come from a backend and be updated via API calls.
+  // For now, we simulate state management locally.
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // Initialize products from mockData on client-side to avoid hydration issues
+    // if mockData were to be mutated directly (which it isn't here, but good practice).
+    setProducts(initialProducts);
+  }, []);
+
+
+  const handleStockStatusChange = (productId: string, newStatus: 'In Stock' | 'Out of Stock') => {
+    // Simulate updating stock status. In a real app, this would be an API call.
+    setProducts(prevProducts => 
+      prevProducts.map(product => 
+        product.id === productId ? { ...product, stockStatus: newStatus } : product
+      )
+    );
+    toast({
+      title: "Stock Status Updated (Simulated)",
+      description: `Product ${productId} marked as ${newStatus}. This change is local and won't persist.`,
+      className: "bg-primary text-primary-foreground border-accent",
+    });
+    console.log(`Simulated stock update: Product ${productId} to ${newStatus}`);
+  };
+
   return (
     <AppShell>
       <PageHeader 
         title="Manage Products"
-        description="Oversee your inventory of fabulous beauty products."
+        description="Oversee your inventory of fabulous beauty products. Update stock status and details."
       />
-      <div className="container py-12 md:py-16 text-center content-animate-in">
-        <p className="text-xl mb-8 text-foreground/80">Product management features are currently under development. Stay tuned!</p>
-         <div className="max-w-lg mx-auto bg-card p-8 rounded-lg shadow-xl border border-primary/20">
-            <PackageSearch className="h-16 w-16 mx-auto text-primary mb-6 animate-bounce"/>
-            <h3 className="text-2xl font-semibold text-primary mb-6">Product Management Hub</h3>
-            <p className="text-muted-foreground mb-6">Soon you'll be able to add new products, update existing ones, manage stock levels, and categorize your items, all from this sparkling interface!</p>
-             <div className="space-y-2 text-left">
-                <p className="flex items-center p-3 bg-secondary/30 rounded-md"><span className="font-semibold mr-2">Product List:</span> View all your amazing products.</p>
-                <p className="flex items-center p-3 bg-secondary/30 rounded-md"><span className="font-semibold mr-2">Add New:</span> Introduce the latest must-haves.</p>
-                <p className="flex items-center p-3 bg-secondary/30 rounded-md"><span className="font-semibold mr-2">Edit Details:</span> Keep product info fresh.</p>
-            </div>
+      <div className="container py-12 md:py-16">
+        <div className="flex justify-between items-center mb-8">
+          <Button asChild variant="outline" className="group text-md py-5 px-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out">
+            <Link href="/admin/dashboard">
+              <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+              Back to Dashboard
+            </Link>
+          </Button>
+          {/* Placeholder for "Add New Product" button if needed in future */}
+          {/* <Button asChild className="group text-md py-5 px-6 transition-all duration-300 ease-out">
+            <Link href="/admin/products/add">
+              <PlusCircle className="mr-2 h-5 w-5 group-hover:animate-pulse" />
+              Add New Product
+            </Link>
+          </Button> */}
         </div>
-        <Button asChild variant="outline" className="mt-12 group text-lg py-6 px-8 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out">
-          <Link href="/admin/dashboard">
-             <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-            Back to Dashboard
-          </Link>
-        </Button>
+
+        <Card className="shadow-xl border-primary/30">
+          <CardHeader>
+            <CardTitle className="text-2xl text-accent">Current Products</CardTitle>
+            <CardDescription>View, edit details (simulated), and manage stock status.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {products.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[80px]">Image</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Stock Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {products.map((product: Product) => (
+                    <TableRow key={product.id} className="hover:bg-primary/5 transition-colors">
+                      <TableCell>
+                        <Image
+                          src={`https://placehold.co/100x100.png`}
+                          alt={product.name}
+                          width={60}
+                          height={60}
+                          className="rounded-md object-cover"
+                          data-ai-hint={product.imageHint}
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">{product.name}</TableCell>
+                      <TableCell>{product.price}</TableCell>
+                      <TableCell>{product.category}</TableCell>
+                      <TableCell>
+                        <Badge variant={product.stockStatus === 'In Stock' ? 'default' : 'destructive'}>
+                          {product.stockStatus}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right space-x-1">
+                        <Button variant="ghost" size="icon" className="hover:bg-blue-500/20 text-blue-500 hover:text-blue-600" title="View (placeholder)">
+                          <Eye className="h-4 w-4" />
+                          <span className="sr-only">View</span>
+                        </Button>
+                        <Button variant="ghost" size="icon" className="hover:bg-accent/20 text-accent hover:text-accent" title="Edit (placeholder)">
+                          <Edit3 className="h-4 w-4" />
+                          <span className="sr-only">Edit</span>
+                        </Button>
+                        {product.stockStatus === 'In Stock' ? (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="hover:bg-red-500/20 text-red-500 hover:text-red-600" 
+                            title="Mark Out of Stock"
+                            onClick={() => handleStockStatusChange(product.id, 'Out of Stock')}
+                          >
+                            <PackageX className="h-4 w-4" />
+                            <span className="sr-only">Mark Out of Stock</span>
+                          </Button>
+                        ) : (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="hover:bg-green-500/20 text-green-500 hover:text-green-600" 
+                            title="Mark In Stock"
+                            onClick={() => handleStockStatusChange(product.id, 'In Stock')}
+                          >
+                            <PackageCheck className="h-4 w-4" />
+                            <span className="sr-only">Mark In Stock</span>
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <p className="text-muted-foreground text-center py-8">No products found. Add some to get started!</p>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </AppShell>
   );

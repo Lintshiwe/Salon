@@ -11,12 +11,12 @@ export const services: Service[] = [
 ];
 
 export const products: Product[] = [
-  { id: 'p1', name: 'Sparkle Shine Shampoo', description: 'Leaves your hair dazzlingly clean and shiny.', price: 'R280', category: 'Hair Care', imageHint: 'shampoo bottle' },
-  { id: 'p2', name: 'Velvet Smooth Conditioner', description: 'Nourishes and detangles for silky smooth hair.', price: 'R300', category: 'Hair Care', imageHint: 'conditioner bottle' },
-  { id: 'p3', name: 'Dream Hold Hair Spray', description: 'Keeps your style in place all day with a touchable hold.', price: 'R250', category: 'Styling', imageHint: 'hairspray can' },
-  { id: 'p4', name: 'Princess Pink Nail Polish', description: 'The perfect shade of Barbie pink for your nails.', price: 'R180', category: 'Nails', imageHint: 'nail-polish bottle' },
-  { id: 'p5', name: 'Glow Up Face Serum', description: 'A magical serum for radiant, youthful skin.', price: 'R550', category: 'Skin Care', imageHint: 'serum skincare' },
-  { id: 'p6', name: 'Diamond Dust Body Lotion', description: 'Hydrating lotion with a subtle shimmer.', price: 'R400', category: 'Body Care', imageHint: 'lotion bottle' },
+  { id: 'p1', name: 'Sparkle Shine Shampoo', description: 'Leaves your hair dazzlingly clean and shiny.', price: 'R280', category: 'Hair Care', stockStatus: 'In Stock', imageHint: 'shampoo bottle' },
+  { id: 'p2', name: 'Velvet Smooth Conditioner', description: 'Nourishes and detangles for silky smooth hair.', price: 'R300', category: 'Hair Care', stockStatus: 'In Stock', imageHint: 'conditioner bottle' },
+  { id: 'p3', name: 'Dream Hold Hair Spray', description: 'Keeps your style in place all day with a touchable hold.', price: 'R250', category: 'Styling', stockStatus: 'Out of Stock', imageHint: 'hairspray can' },
+  { id: 'p4', name: 'Princess Pink Nail Polish', description: 'The perfect shade of Barbie pink for your nails.', price: 'R180', category: 'Nails', stockStatus: 'In Stock', imageHint: 'nail-polish bottle' },
+  { id: 'p5', name: 'Glow Up Face Serum', description: 'A magical serum for radiant, youthful skin.', price: 'R550', category: 'Skin Care', stockStatus: 'In Stock', imageHint: 'serum skincare' },
+  { id: 'p6', name: 'Diamond Dust Body Lotion', description: 'Hydrating lotion with a subtle shimmer.', price: 'R400', category: 'Body Care', stockStatus: 'Out of Stock', imageHint: 'lotion bottle' },
 ];
 
 export const stylists: Stylist[] = [
@@ -41,4 +41,15 @@ export const bookings: Booking[] = [
   { id: 'b1', serviceName: 'Signature Haircut & Style', clientName: 'Barbie Malibu', date: '2024-07-15', time: '10:00 AM', status: 'Confirmed' },
   { id: 'b2', serviceName: 'Luxury Manicure', clientName: 'Skipper Roberts', date: '2024-07-16', time: '02:00 PM', status: 'Pending' },
   { id: 'b3', serviceName: 'Rejuvenating Facial', clientName: 'Midge Hadley', date: '2024-07-18', time: '11:30 AM', status: 'Completed' },
+  { id: 'b4', serviceName: 'Glamour Makeup Application', clientName: 'Teresa Rivera', date: '2024-07-20', time: '01:00 PM', status: 'Confirmed' },
+  { id: 'b5', serviceName: 'Deluxe Pedicure', clientName: 'Raquelle', date: '2024-07-22', time: '03:30 PM', status: 'Cancelled' },
+];
+
+// Items to feature in the "Magical Deals & Delights" section on the homepage.
+// To change promotions, an admin would manually edit this array.
+export const promotedItems: Array<{id: string; type: 'service' | 'product'}> = [
+    { id: services[0].id, type: 'service' }, // Signature Haircut & Style
+    { id: products[0].id, type: 'product' }, // Sparkle Shine Shampoo
+    { id: services[2].id, type: 'service' }, // Rejuvenating Facial
+    { id: products[3].id, type: 'product' }, // Princess Pink Nail Polish
 ];
