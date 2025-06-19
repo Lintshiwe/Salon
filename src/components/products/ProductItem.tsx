@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -9,6 +10,7 @@ interface ProductItemProps {
 }
 
 export function ProductItem({ product }: ProductItemProps) {
+  const displayPrice = product.price.startsWith('R') ? product.price : `R${product.price.replace('$', '')}`;
   return (
     <Card className="flex flex-col overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-card h-full sparkle-hover group">
       <CardHeader className="p-0 relative">
@@ -28,10 +30,10 @@ export function ProductItem({ product }: ProductItemProps) {
         <CardTitle className="text-2xl lg:text-3xl font-semibold text-accent mb-2 group-hover:text-primary transition-colors">{product.name}</CardTitle>
         <p className="text-sm text-muted-foreground mb-2">{product.category}</p>
         <CardDescription className="text-foreground/75 mb-4 text-base leading-relaxed h-20 overflow-hidden">{product.description}</CardDescription>
-        <p className="text-3xl font-bold text-primary mt-auto">{product.price}</p>
+        <p className="text-3xl font-bold text-primary mt-auto">{displayPrice}</p>
       </CardContent>
       <CardFooter className="p-6 pt-0">
-        <Button className="w-full text-lg py-6 group/button sparkle-hover">
+        <Button className="w-full text-lg py-6 group/button sparkle-hover transition-all duration-300 ease-out">
           Add to Bag <Sparkles className="ml-2 h-5 w-5 group-hover/button:animate-sparkle-pulse"/>
         </Button>
       </CardFooter>

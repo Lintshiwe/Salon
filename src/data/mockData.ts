@@ -1,21 +1,22 @@
-import type { Service, Product, Stylist, GalleryImage } from '@/lib/types';
+
+import type { Service, Product, Stylist, GalleryImage, Booking } from '@/lib/types';
 
 export const services: Service[] = [
-  { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: '$75+', duration: '60 mins', imageHint: 'haircut styling' },
-  { id: '2', name: 'Luxury Manicure', description: 'Indulge in a pampering manicure with premium products.', price: '$50', duration: '45 mins', imageHint: 'manicure hands' },
-  { id: '3', name: 'Rejuvenating Facial', description: 'Customized facial treatment to refresh and revitalize your skin.', price: '$120', duration: '75 mins', imageHint: 'facial spa' },
-  { id: '4', name: 'Glamour Makeup Application', description: 'Full makeup for special occasions or a night out.', price: '$90', duration: '60 mins', imageHint: 'makeup beauty' },
-  { id: '5', name: 'Deluxe Pedicure', description: 'Relax with a soothing pedicure, including massage and polish.', price: '$65', duration: '60 mins', imageHint: 'pedicure feet' },
-  { id: '6', name: 'Hair Coloring', description: 'From subtle highlights to bold new colors, expertly applied.', price: '$150+', duration: '120 mins', imageHint: 'hair color' },
+  { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: 'R750+', duration: '60 mins', imageHint: 'haircut styling' },
+  { id: '2', name: 'Luxury Manicure', description: 'Indulge in a pampering manicure with premium products.', price: 'R500', duration: '45 mins', imageHint: 'manicure hands' },
+  { id: '3', name: 'Rejuvenating Facial', description: 'Customized facial treatment to refresh and revitalize your skin.', price: 'R1200', duration: '75 mins', imageHint: 'facial spa' },
+  { id: '4', name: 'Glamour Makeup Application', description: 'Full makeup for special occasions or a night out.', price: 'R900', duration: '60 mins', imageHint: 'makeup beauty' },
+  { id: '5', name: 'Deluxe Pedicure', description: 'Relax with a soothing pedicure, including massage and polish.', price: 'R650', duration: '60 mins', imageHint: 'pedicure feet' },
+  { id: '6', name: 'Hair Coloring', description: 'From subtle highlights to bold new colors, expertly applied.', price: 'R1500+', duration: '120 mins', imageHint: 'hair color' },
 ];
 
 export const products: Product[] = [
-  { id: 'p1', name: 'Sparkle Shine Shampoo', description: 'Leaves your hair dazzlingly clean and shiny.', price: '$28', category: 'Hair Care', imageHint: 'shampoo bottle' },
-  { id: 'p2', name: 'Velvet Smooth Conditioner', description: 'Nourishes and detangles for silky smooth hair.', price: '$30', category: 'Hair Care', imageHint: 'conditioner bottle' },
-  { id: 'p3', name: 'Dream Hold Hair Spray', description: 'Keeps your style in place all day with a touchable hold.', price: '$25', category: 'Styling', imageHint: 'hairspray can' },
-  { id: 'p4', name: 'Princess Pink Nail Polish', description: 'The perfect shade of Barbie pink for your nails.', price: '$18', category: 'Nails', imageHint: 'nail-polish bottle' },
-  { id: 'p5', name: 'Glow Up Face Serum', description: 'A magical serum for radiant, youthful skin.', price: '$55', category: 'Skin Care', imageHint: 'serum skincare' },
-  { id: 'p6', name: 'Diamond Dust Body Lotion', description: 'Hydrating lotion with a subtle shimmer.', price: '$40', category: 'Body Care', imageHint: 'lotion bottle' },
+  { id: 'p1', name: 'Sparkle Shine Shampoo', description: 'Leaves your hair dazzlingly clean and shiny.', price: 'R280', category: 'Hair Care', imageHint: 'shampoo bottle' },
+  { id: 'p2', name: 'Velvet Smooth Conditioner', description: 'Nourishes and detangles for silky smooth hair.', price: 'R300', category: 'Hair Care', imageHint: 'conditioner bottle' },
+  { id: 'p3', name: 'Dream Hold Hair Spray', description: 'Keeps your style in place all day with a touchable hold.', price: 'R250', category: 'Styling', imageHint: 'hairspray can' },
+  { id: 'p4', name: 'Princess Pink Nail Polish', description: 'The perfect shade of Barbie pink for your nails.', price: 'R180', category: 'Nails', imageHint: 'nail-polish bottle' },
+  { id: 'p5', name: 'Glow Up Face Serum', description: 'A magical serum for radiant, youthful skin.', price: 'R550', category: 'Skin Care', imageHint: 'serum skincare' },
+  { id: 'p6', name: 'Diamond Dust Body Lotion', description: 'Hydrating lotion with a subtle shimmer.', price: 'R400', category: 'Body Care', imageHint: 'lotion bottle' },
 ];
 
 export const stylists: Stylist[] = [
@@ -34,4 +35,10 @@ export const galleryImages: GalleryImage[] = [
   { id: 'g7', alt: 'The Born@Beautiful Team smiling', category: 'Team Members', imageHint: 'salon team' },
   { id: 'g8', alt: 'Stylist performing a haircut', category: 'Team Members', imageHint: 'stylist working' },
   { id: 'g9', alt: 'Close up of intricate nail art', category: 'Recent Work', imageHint: 'nail art' },
+];
+
+export const bookings: Booking[] = [
+  { id: 'b1', serviceName: 'Signature Haircut & Style', clientName: 'Barbie Malibu', date: '2024-07-15', time: '10:00 AM', status: 'Confirmed' },
+  { id: 'b2', serviceName: 'Luxury Manicure', clientName: 'Skipper Roberts', date: '2024-07-16', time: '02:00 PM', status: 'Pending' },
+  { id: 'b3', serviceName: 'Rejuvenating Facial', clientName: 'Midge Hadley', date: '2024-07-18', time: '11:30 AM', status: 'Completed' },
 ];

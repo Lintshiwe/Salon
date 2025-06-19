@@ -1,3 +1,4 @@
+
 import { AppShell } from '@/components/layout/AppShell';
 import { HeroSection } from '@/components/home/HeroSection';
 import { services, products } from '@/data/mockData';
@@ -39,11 +40,11 @@ export default function Home() {
                 <CardContent className="p-6">
                   <CardTitle className="text-2xl font-semibold text-accent mb-2">{service.name}</CardTitle>
                   <CardDescription className="text-foreground/70 mb-4 h-20 overflow-hidden">{service.description}</CardDescription>
-                  <p className="text-2xl font-bold text-primary mb-1">{service.price}</p>
+                  <p className="text-2xl font-bold text-primary mb-1">{service.price.startsWith('R') ? service.price : `R${service.price.replace('$', '')}`}</p>
                   {service.duration && <p className="text-sm text-muted-foreground">{service.duration}</p>}
                 </CardContent>
                 <CardFooter className="p-6 pt-0">
-                  <Button asChild variant="outline" className="w-full sparkle-hover border-primary text-primary hover:bg-primary/10 group">
+                  <Button asChild variant="outline" className="w-full sparkle-hover border-primary text-primary hover:bg-primary/10 group transition-all duration-300 ease-out">
                     <Link href="/services">
                       Learn More <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform"/>
                     </Link>
@@ -79,10 +80,10 @@ export default function Home() {
                 <CardContent className="p-6">
                   <CardTitle className="text-2xl font-semibold text-accent mb-2">{product.name}</CardTitle>
                   <CardDescription className="text-foreground/70 mb-4 h-16 overflow-hidden">{product.description}</CardDescription>
-                  <p className="text-2xl font-bold text-primary">{product.price}</p>
+                  <p className="text-2xl font-bold text-primary">{product.price.startsWith('R') ? product.price : `R${product.price.replace('$', '')}`}</p>
                 </CardContent>
                  <CardFooter className="p-6 pt-0">
-                  <Button className="w-full sparkle-hover group">
+                  <Button className="w-full sparkle-hover group transition-all duration-300 ease-out">
                     Add to Bag <ShoppingBag className="ml-2 h-4 w-4 group-hover:animate-pulse"/>
                   </Button>
                 </CardFooter>
