@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import type { Product } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingBag, Sparkles, PackageX } from 'lucide-react';
+import { PhoneCall, Sparkles, PackageX } from 'lucide-react';
 
 interface ProductItemProps {
   product: Product;
@@ -26,7 +26,7 @@ export function ProductItem({ product }: ProductItemProps) {
           data-ai-hint={product.imageHint}
         />
         <div className="absolute top-2 right-2 bg-accent text-accent-foreground p-2 rounded-bl-lg rounded-tr-md shadow-md">
-            <ShoppingBag className="h-5 w-5"/>
+            <Sparkles className="h-5 w-5"/>
         </div>
         {isOutOfStock && (
           <Badge variant="destructive" className="absolute top-2 left-2 text-sm px-3 py-1.5">Out of Stock</Badge>
@@ -43,8 +43,8 @@ export function ProductItem({ product }: ProductItemProps) {
           className="w-full text-lg py-6 group/button sparkle-hover transition-all duration-300 ease-out"
           disabled={isOutOfStock}
         >
-          {isOutOfStock ? 'Out of Stock' : 'Add to Bag'}
-          {isOutOfStock ? <PackageX className="ml-2 h-5 w-5"/> : <Sparkles className="ml-2 h-5 w-5 group-hover/button:animate-sparkle-pulse"/>}
+          {isOutOfStock ? 'Out of Stock' : 'Call to Purchase'}
+          {isOutOfStock ? <PackageX className="ml-2 h-5 w-5"/> : <PhoneCall className="ml-2 h-5 w-5 group-hover/button:animate-pulse"/>}
         </Button>
       </CardFooter>
     </Card>

@@ -10,26 +10,21 @@ import { products as initialProducts } from '@/data/mockData';
 import type { Product } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Edit3, PackageCheck, PackageX, Eye } from 'lucide-react';
+import { ArrowLeft, Edit3, PackageCheck, PackageX, Eye, PlusCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 
 export default function ManageProductsPage() {
   const { toast } = useToast();
-  // In a real app, this state would come from a backend and be updated via API calls.
-  // For now, we simulate state management locally.
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Initialize products from mockData on client-side to avoid hydration issues
-    // if mockData were to be mutated directly (which it isn't here, but good practice).
     setProducts(initialProducts);
   }, []);
 
 
   const handleStockStatusChange = (productId: string, newStatus: 'In Stock' | 'Out of Stock') => {
-    // Simulate updating stock status. In a real app, this would be an API call.
     setProducts(prevProducts => 
       prevProducts.map(product => 
         product.id === productId ? { ...product, stockStatus: newStatus } : product
@@ -37,7 +32,7 @@ export default function ManageProductsPage() {
     );
     toast({
       title: "Stock Status Updated (Simulated)",
-      description: `Product ${productId} marked as ${newStatus}. This change is local and won't persist.`,
+      description: `Product "${products.find(p=>p.id === productId)?.name}" marked as ${newStatus}. This change is local and won't persist.`,
       className: "bg-primary text-primary-foreground border-accent",
     });
     console.log(`Simulated stock update: Product ${productId} to ${newStatus}`);
@@ -57,13 +52,12 @@ export default function ManageProductsPage() {
               Back to Dashboard
             </Link>
           </Button>
-          {/* Placeholder for "Add New Product" button if needed in future */}
-          {/* <Button asChild className="group text-md py-5 px-6 transition-all duration-300 ease-out">
+          <Button asChild className="group text-md py-5 px-6 transition-all duration-300 ease-out">
             <Link href="/admin/products/add">
               <PlusCircle className="mr-2 h-5 w-5 group-hover:animate-pulse" />
               Add New Product
             </Link>
-          </Button> */}
+          </Button>
         </div>
 
         <Card className="shadow-xl border-primary/30">

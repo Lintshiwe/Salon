@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowRight, ShoppingBag, Sparkles, Wand2, PackageX } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Sparkles, Wand2, PackageX, PhoneCall } from 'lucide-react';
 import { Badge } from "@/components/ui/badge"
 
 export default function Home() {
@@ -121,8 +121,8 @@ export default function Home() {
                         className="w-full sparkle-hover group/btn transition-all duration-300 ease-out"
                         disabled={item.stockStatus === 'Out of Stock'}
                       >
-                        {item.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Add to Bag'}
-                        {item.stockStatus === 'In Stock' && <ShoppingBag className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
+                        {item.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
+                        {item.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
                         {item.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-5 w-5"/>}
                       </Button>
                     )}
@@ -168,8 +168,8 @@ export default function Home() {
                     className="w-full sparkle-hover group transition-all duration-300 ease-out"
                     disabled={product.stockStatus === 'Out of Stock'}
                   >
-                    {product.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Add to Bag'}
-                    {product.stockStatus === 'In Stock' && <ShoppingBag className="ml-2 h-4 w-4 group-hover:animate-pulse"/>}
+                    {product.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
+                    {product.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-4 w-4 group-hover:animate-pulse"/>}
                     {product.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-4 w-4"/>}
                   </Button>
                 </CardFooter>

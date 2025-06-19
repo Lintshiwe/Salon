@@ -2,7 +2,7 @@
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2, PlusCircle, ListChecks, UserCheck, Settings } from 'lucide-react';
+import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2, PlusCircle, ListChecks, UserCheck, Settings, Megaphone } from 'lucide-react'; // Added Megaphone
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
@@ -136,6 +136,11 @@ export default function AdminDashboardPage() {
                     <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
                         <Link href="/admin/products/manage">
                             <ListChecks className="mr-3 h-5 w-5 group-hover:animate-pulse"/> Manage Products
+                        </Link>
+                    </Button>
+                     <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
+                        <Link href="/admin/promotions/manage">
+                            <Megaphone className="mr-3 h-5 w-5 group-hover:animate-pulse"/> Manage Promotions
                         </Link>
                     </Button>
                     <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
