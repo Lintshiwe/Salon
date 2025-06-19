@@ -112,9 +112,24 @@ export default {
           '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
           '50%': { transform: 'scale(1.15)', opacity: '1' },
         },
-        'magical-pulse': { /* Renamed from subtle-pulse for clarity */
+        'magical-pulse': { 
           '0%, 100%': { transform: 'scale(1) rotate(0deg)', opacity: '0.7' },
           '50%': { transform: 'scale(1.2) rotate(5deg)', opacity: '1' },
+        },
+        'slow-spin': {
+          to: { transform: 'rotate(360deg)' },
+        },
+        'gentle-float': {
+          '0%, 100%': { transform: 'translateY(0px) rotate(-5deg)' },
+          '50%': { transform: 'translateY(-12px) rotate(5deg)' },
+        },
+        'subtle-rotate': {
+          '0%, 100%': { transform: 'rotate(-8deg) scale(1)' },
+          '50%': { transform: 'rotate(8deg) scale(1.1)' },
+        },
+        'sparkle-subtle': {
+          '0%, 100%': { transform: 'scale(0.9) rotate(0deg)', opacity: '0.6' },
+          '50%': { transform: 'scale(1.2) rotate(10deg)', opacity: '1' },
         }
       },
       animation: {
@@ -125,6 +140,10 @@ export default {
         'dance': 'dance 0.8s ease-in-out',
         'subtle-pulse': 'subtle-pulse 0.3s ease-out',
         'magical-pulse': 'magical-pulse 2s infinite ease-in-out alternate',
+        'slow-spin': 'slow-spin 30s linear infinite',
+        'gentle-float': 'gentle-float 4s ease-in-out infinite alternate',
+        'subtle-rotate': 'subtle-rotate 3s ease-in-out infinite alternate',
+        'sparkle-subtle': 'sparkle-subtle 2.5s ease-in-out infinite alternate',
       },
     },
   },

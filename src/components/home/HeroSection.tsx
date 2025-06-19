@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight, ScissorsIcon, Wand2Icon } from 'lucide-react';
 
 export function HeroSection() {
   return (
@@ -29,26 +29,39 @@ export function HeroSection() {
               </Button>
             </div>
           </div>
-          <div className="relative animate-in fade-in slide-in-from-right-10 duration-700 delay-200">
-            <div className="aspect-square rounded-full overflow-hidden shadow-2xl mx-auto md:mx-0 max-w-md lg:max-w-lg border-4 border-white transform rotate-3 hover:rotate-0 transition-transform duration-500">
+          
+          {/* Enhanced Image Section */}
+          <div className="relative group flex items-center justify-center animate-in fade-in zoom-in-75 duration-1000 delay-200">
+            <div className="absolute inset-0 animate-slow-spin [animation-duration:40s]">
+              {/* Orbiting Icons */}
+              <Sparkles className="absolute top-[5%] left-[20%] h-10 w-10 text-accent opacity-70 animate-sparkle-subtle [animation-delay:0.5s]" />
+              <ScissorsIcon className="absolute top-[25%] right-[5%] h-10 w-10 text-primary opacity-70 animate-subtle-rotate [animation-delay:1s]" />
+              <Wand2Icon className="absolute bottom-[10%] left-[10%] h-10 w-10 text-pink-400 opacity-70 animate-gentle-float [animation-delay:1.5s]" />
+              <Sparkles className="absolute bottom-[20%] right-[15%] h-8 w-8 text-accent opacity-60 animate-sparkle-subtle [animation-delay:2s]" />
+            </div>
+
+            <div 
+              className="relative aspect-square rounded-full overflow-hidden shadow-2xl mx-auto md:mx-0 max-w-sm sm:max-w-md lg:max-w-lg border-4 border-white 
+                         transform rotate-3 group-hover:rotate-0 
+                         transition-all duration-500 ease-out
+                         group-hover:shadow-[0_0_40px_15px_hsla(var(--primary)/0.3),_0_0_20px_8px_hsla(var(--accent)/0.25)]"
+            >
               <Image
-                src="https://placehold.co/600x600.png"
-                alt="Beautiful hairstyle"
+                src="https://placehold.co/600x600/E8A0BF/1E3A8A.png" 
+                alt="Stylized woman face logo for Born@Beautiful salon"
                 width={600}
                 height={600}
-                className="object-cover w-full h-full"
-                data-ai-hint="glamorous hairstyle"
+                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                data-ai-hint="stylized woman face logo dark_blue_on_pink"
                 priority
               />
             </div>
-            <Sparkles className="absolute -top-8 -left-8 h-16 w-16 text-accent opacity-70 animate-pulse" />
-            <Sparkles className="absolute -bottom-8 -right-8 h-16 w-16 text-primary opacity-70 animate-pulse delay-500" />
           </div>
         </div>
       </div>
-      {/* Decorative shapes */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-primary/20 rounded-full filter blur-2xl opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-48 h-48 bg-accent/20 rounded-full filter blur-2xl opacity-50 translate-x-1/3 translate-y-1/3"></div>
+      {/* Decorative shapes - kept from original */}
+      <div className="absolute top-0 left-0 w-32 h-32 bg-primary/20 rounded-full filter blur-2xl opacity-50 -translate-x-1/2 -translate-y-1/2 animate-pulse [animation-duration:5s]"></div>
+      <div className="absolute bottom-0 right-0 w-48 h-48 bg-accent/20 rounded-full filter blur-2xl opacity-50 translate-x-1/3 translate-y-1/3 animate-pulse [animation-duration:6s] [animation-delay:1s]"></div>
     </div>
   );
 }
