@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -59,7 +60,7 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-      {/* Decorative shapes - kept from original */}
+      {/* Decorative shapes */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-primary/20 rounded-full filter blur-2xl opacity-50 -translate-x-1/2 -translate-y-1/2 animate-pulse [animation-duration:5s]"></div>
       <div className="absolute bottom-0 right-0 w-48 h-48 bg-accent/20 rounded-full filter blur-2xl opacity-50 translate-x-1/3 translate-y-1/3 animate-pulse [animation-duration:6s] [animation-delay:1s]"></div>
     </div>
