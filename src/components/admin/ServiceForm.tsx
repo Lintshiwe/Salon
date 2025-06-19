@@ -2,7 +2,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,10 +17,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { UploadCloud, Image as ImageIcon, Loader2, Wand2 } from "lucide-react";
+import { UploadCloud, Loader2, Wand2 } from "lucide-react";
 import NextImage from "next/image";
-import { useState, ChangeEvent } from "react";
-import type { Service } from "@/lib/types";
+import { useState, ChangeEvent, useEffect } from "react";
+import type { Service, ActionResponse } from "@/lib/types";
+import { addServiceAction } from "@/app/admin/services/actions";
+import { useFormState } from "react-dom";
 
 const serviceFormSchema = z.object({
   name: z.string().min(3, { message: "Service name must be at least 3 characters." }),
@@ -36,26 +38,55 @@ const serviceFormSchema = z.object({
 type ServiceFormValues = z.infer<typeof serviceFormSchema>;
 
 interface ServiceFormProps {
-  initialData?: Partial<Service>; // For editing in the future
+  initialData?: Partial<Service>;
   onSubmitSuccess?: () => void;
 }
 
+const initialState: ActionResponse = { success: false };
+
 export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) {
   const { toast } = useToast();
-  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageHint ? `https://placehold.co/600x400.png?text=${initialData.name}` : null); // Placeholder for existing image
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [state, formAction] = useFormState(addServiceAction, initialState);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageHint ? `https://placehold.co/600x400.png?text=${initialData.name}` : null);
+ 
   const form = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceFormSchema),
     defaultValues: {
-      name: initialData?.name || "",
-      description: initialData?.description || "",
-      price: initialData?.price || "",
-      duration: initialData?.duration || "",
+      name: initialData?.name || state?.fieldValues?.name || "",
+      description: initialData?.description || state?.fieldValues?.description || "",
+      price: initialData?.price || state?.fieldValues?.price || "",
+      duration: initialData?.duration || state?.fieldValues?.duration || "",
       imageFile: null,
-      imageHint: initialData?.imageHint || "",
+      imageHint: initialData?.imageHint || state?.fieldValues?.imageHint ||"",
     },
   });
+
+ useEffect(() => {
+    if (state.success) {
+      toast({
+        title: "Service Added! ✨",
+        description: state.message,
+        className: "bg-primary text-primary-foreground border-accent",
+      });
+      form.reset({ name: "", description: "", price: "", duration: "", imageFile: null, imageHint: "" });
+      setImagePreview(null);
+      if (onSubmitSuccess) onSubmitSuccess();
+    } else if (state.message && !state.success) {
+       toast({
+        variant: "destructive",
+        title: "Operation Failed",
+        description: state.message,
+      });
+      if (state.errors) {
+        Object.entries(state.errors).forEach(([field, messages]) => {
+          if (messages && messages.length > 0) {
+            form.setError(field as keyof ServiceFormValues, { type: 'server', message: messages.join(', ') });
+          }
+        });
+      }
+    }
+  }, [state, toast, form, onSubmitSuccess]);
+
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -72,31 +103,9 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
     }
   };
 
-  async function onSubmit(data: ServiceFormValues) {
-    setIsSubmitting(true);
-    // Simulate API call for adding/updating service
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log("Service data submitted:", {
-        ...data,
-        imageFileName: data.imageFile?.name, // Log filename for now
-    });
-
-    toast({
-      title: `Service ${initialData ? 'Updated' : 'Added'}! ✨`,
-      description: `"${data.name}" has been successfully ${initialData ? 'updated' : 'added'}.`,
-      className: "bg-primary text-primary-foreground border-accent",
-    });
-    
-    form.reset({ name: "", description: "", price: "", duration: "", imageFile: null, imageHint: "" });
-    setImagePreview(null);
-    setIsSubmitting(false);
-    if (onSubmitSuccess) onSubmitSuccess();
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form action={formAction} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
@@ -169,7 +178,7 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
                     <Input placeholder="e.g., haircut styling" {...field} className="text-base py-5 focus:border-primary focus:ring-primary" />
                 </FormControl>
                 <FormDescription>
-                    Provide 1-2 keywords for AI to find a suitable placeholder image later (e.g., "manicure hands").
+                    Provide 1-2 keywords for AI to find a suitable placeholder image later (e.g., "manicure hands"). This is used if no image is uploaded.
                 </FormDescription>
                 <FormMessage />
                 </FormItem>
@@ -181,10 +190,10 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
           name="imageFile"
           render={({ field: { onChange, value, ...restField } }) => (
             <FormItem>
-              <FormLabel className="text-lg text-accent">Service Image</FormLabel>
+              <FormLabel className="text-lg text-accent">Service Image (Optional)</FormLabel>
               <FormControl>
                 <div className="flex flex-col items-center space-y-4">
-                  <label htmlFor="imageUpload" className="w-full cursor-pointer">
+                  <label htmlFor="imageUploadService" className="w-full cursor-pointer">
                     <div className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-input-border rounded-lg hover:border-primary transition-colors bg-muted/50 hover:bg-muted">
                       {imagePreview ? (
                         <NextImage src={imagePreview} alt="Image Preview" width={150} height={150} className="max-h-44 w-auto object-contain rounded-md" />
@@ -198,12 +207,12 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
                     </div>
                   </label>
                   <Input
-                    id="imageUpload"
+                    id="imageUploadService"
                     type="file"
                     accept="image/png, image/jpeg, image/webp, image/gif"
                     onChange={handleImageChange}
                     className="hidden"
-                    {...restField}
+                    {...restField} 
                   />
                 </div>
               </FormControl>
@@ -212,8 +221,8 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
           )}
         />
         
-        <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={isSubmitting}>
-          {isSubmitting ? (
+        <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-6 w-6 animate-spin" />
               {initialData ? "Updating Service..." : "Adding Service..."}

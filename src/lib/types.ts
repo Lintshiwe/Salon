@@ -1,3 +1,4 @@
+
 export interface Service {
   id: string;
   name: string;
@@ -5,6 +6,7 @@ export interface Service {
   price: string;
   duration?: string;
   imageHint: string;
+  imageFile?: File; 
 }
 
 export interface Product {
@@ -15,6 +17,7 @@ export interface Product {
   category: string;
   stockStatus: 'In Stock' | 'Out of Stock';
   imageHint: string;
+  imageFile?: File;
 }
 
 export interface Stylist {
@@ -45,4 +48,12 @@ export interface Booking {
   date: string;
   time: string;
   status: 'Confirmed' | 'Pending' | 'Completed' | 'Cancelled';
+}
+
+// For Server Action responses
+export interface ActionResponse {
+  success: boolean;
+  message?: string;
+  errors?: Record<string, string[] | undefined>;
+  fieldValues?: Record<string, string>;
 }

@@ -1,15 +1,31 @@
 
+"use client";
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2, PlusCircle, ListChecks, UserCheck, Settings, Megaphone } from 'lucide-react'; // Added Megaphone
+import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Settings, ListChecks, UserCheck, Megaphone, ImageUp, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
 import { bookings as mockBookings } from '@/data/mockData'; 
 import Link from 'next/link';
+import React, { useState, useEffect, useRef } from 'react';
+import { useFormState } from 'react-dom';
+import { updateHomepageHeroImageAction } from '@/app/admin/homepageActions';
+import type { ActionResponse } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
+
+const initialHeroImageFormState: ActionResponse = { success: false };
 
 export default function AdminDashboardPage() {
+  const { toast } = useToast();
+  const [heroImageFormState, heroImageFormAction] = useFormState(updateHomepageHeroImageAction, initialHeroImageFormState);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isHeroImageSubmitting, setIsHeroImageSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+
   const stats = [
     { title: "Total Revenue", value: "R12,345", icon: DollarSign, color: "text-green-500", bgColor: "bg-green-100" },
     { title: "New Clients", value: "67", icon: Users, color: "text-blue-500", bgColor: "bg-blue-100" },
@@ -46,6 +62,47 @@ export default function AdminDashboardPage() {
         return <CalendarDays className="h-5 w-5 text-muted-foreground" />;
     }
   };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
+
+  const handleHeroImageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsHeroImageSubmitting(true);
+    const formData = new FormData(event.currentTarget);
+    await heroImageFormAction(formData); // Directly call the action
+    setIsHeroImageSubmitting(false);
+  };
+
+  useEffect(() => {
+    if (heroImageFormState.message) {
+      if (heroImageFormState.success) {
+        toast({
+          title: "Success!",
+          description: heroImageFormState.message,
+          className: "bg-primary text-primary-foreground border-accent",
+        });
+        setImagePreview(null); 
+        if(fileInputRef.current) fileInputRef.current.value = "";
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Upload Failed",
+          description: heroImageFormState.message,
+        });
+      }
+    }
+  }, [heroImageFormState, toast]);
 
 
   return (
@@ -106,12 +163,8 @@ export default function AdminDashboardPage() {
                             <TableCell>{booking.time}</TableCell>
                             <TableCell className="text-right">
                                 <Button variant="ghost" size="icon" className="hover:bg-accent/20 text-accent hover:text-accent mr-1">
-                                    <Edit3 className="h-4 w-4" />
+                                    <Settings className="h-4 w-4" />
                                     <span className="sr-only">Edit</span>
-                                </Button>
-                                <Button variant="ghost" size="icon" className="hover:bg-destructive/20 text-destructive hover:text-destructive">
-                                    <Trash2 className="h-4 w-4" />
-                                    <span className="sr-only">Cancel</span>
                                 </Button>
                             </TableCell>
                             </TableRow>
@@ -148,6 +201,53 @@ export default function AdminDashboardPage() {
                             <UserCheck className="mr-3 h-5 w-5 group-hover:animate-pulse"/> View Client List
                          </Link>
                     </Button>
+                </CardContent>
+            </Card>
+        </div>
+
+        <div className="mt-12 content-animate-in animate-in fade-in slide-in-from-bottom-10 duration-500 delay-600">
+            <Card className="shadow-lg">
+                <CardHeader>
+                    <CardTitle className="text-2xl text-accent flex items-center"><ImageUp className="mr-3 h-7 w-7"/>Homepage Settings</CardTitle>
+                    <CardDescription>Manage elements on your homepage, like the hero profile image.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleHeroImageSubmit} className="space-y-6">
+                        <div>
+                            <label htmlFor="heroImage" className="block text-lg font-medium text-accent mb-2">
+                                Update Hero Profile Image
+                            </label>
+                            <Input
+                                id="heroImage"
+                                name="heroImage"
+                                type="file"
+                                ref={fileInputRef}
+                                accept="image/png, image/jpeg, image/webp, image/gif"
+                                onChange={handleImageChange}
+                                className="text-base file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                            />
+                            {heroImageFormState?.message && !heroImageFormState.success && (
+                                <p className="text-sm text-destructive mt-2">{heroImageFormState.message}</p>
+                            )}
+                            {imagePreview && (
+                                <div className="mt-4">
+                                    <p className="text-sm text-muted-foreground mb-2">Image Preview:</p>
+                                    <img src={imagePreview} alt="Hero preview" className="max-h-48 rounded-md border border-border shadow-sm" />
+                                </div>
+                            )}
+                        </div>
+                        <Button type="submit" className="text-lg py-3 px-6 sparkle-hover group" disabled={isHeroImageSubmitting}>
+                            {isHeroImageSubmitting ? (
+                                <>
+                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Uploading...
+                                </>
+                            ) : (
+                                <>
+                                    <ImageUp className="mr-2 h-5 w-5 group-hover:animate-pulse" /> Update Hero Image
+                                </>
+                            )}
+                        </Button>
+                    </form>
                 </CardContent>
             </Card>
         </div>

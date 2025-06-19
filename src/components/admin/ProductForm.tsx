@@ -18,10 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { UploadCloud, Image as ImageIcon, Loader2, PackagePlus } from "lucide-react";
+import { UploadCloud, Loader2, PackagePlus } from "lucide-react";
 import NextImage from "next/image";
-import { useState, ChangeEvent } from "react";
-import type { Product } from "@/lib/types";
+import { useState, ChangeEvent, useEffect } from "react";
+import type { Product, ActionResponse } from "@/lib/types";
+import { addProductAction } from "@/app/admin/products/actions";
+import { useFormState } from "react-dom";
 
 const productFormSchema = z.object({
   name: z.string().min(3, { message: "Product name must be at least 3 characters." }),
@@ -38,27 +40,55 @@ const productFormSchema = z.object({
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
 interface ProductFormProps {
-  initialData?: Partial<Product>; // For editing in the future
+  initialData?: Partial<Product>;
   onSubmitSuccess?: () => void;
 }
 
+const initialState: ActionResponse = { success: false };
+
 export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) {
   const { toast } = useToast();
+  const [state, formAction] = useFormState(addProductAction, initialState);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageHint ? `https://placehold.co/600x400.png?text=${initialData.name}` : null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
-      name: initialData?.name || "",
-      description: initialData?.description || "",
-      price: initialData?.price || "",
-      category: initialData?.category || "",
-      stockStatus: initialData?.stockStatus || 'In Stock',
+      name: initialData?.name || state?.fieldValues?.name || "",
+      description: initialData?.description || state?.fieldValues?.description || "",
+      price: initialData?.price || state?.fieldValues?.price || "",
+      category: initialData?.category || state?.fieldValues?.category || "",
+      stockStatus: initialData?.stockStatus || (state?.fieldValues?.stockStatus as 'In Stock' | 'Out of Stock') || 'In Stock',
       imageFile: null,
-      imageHint: initialData?.imageHint || "",
+      imageHint: initialData?.imageHint || state?.fieldValues?.imageHint || "",
     },
   });
+
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: "Product Added! ✨",
+        description: state.message,
+        className: "bg-primary text-primary-foreground border-accent",
+      });
+      form.reset({ name: "", description: "", price: "", category: "", stockStatus: 'In Stock', imageFile: null, imageHint: "" });
+      setImagePreview(null);
+      if (onSubmitSuccess) onSubmitSuccess();
+    } else if (state.message && !state.success) {
+      toast({
+        variant: "destructive",
+        title: "Operation Failed",
+        description: state.message,
+      });
+      if (state.errors) {
+        Object.entries(state.errors).forEach(([field, messages]) => {
+          if (messages && messages.length > 0) {
+            form.setError(field as keyof ProductFormValues, { type: 'server', message: messages.join(', ') });
+          }
+        });
+      }
+    }
+  }, [state, toast, form, onSubmitSuccess]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -74,31 +104,10 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
       setImagePreview(null);
     }
   };
-
-  async function onSubmit(data: ProductFormValues) {
-    setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log("Product data submitted (simulated):", {
-        ...data,
-        imageFileName: data.imageFile?.name, 
-    });
-
-    toast({
-      title: `Product ${initialData ? 'Updated' : 'Added'}! ✨`,
-      description: `"${data.name}" has been successfully ${initialData ? 'updated' : 'added'} to the catalog.`,
-      className: "bg-primary text-primary-foreground border-accent",
-    });
-    
-    form.reset({ name: "", description: "", price: "", category: "", stockStatus: 'In Stock', imageFile: null, imageHint: ""});
-    setImagePreview(null);
-    setIsSubmitting(false);
-    if (onSubmitSuccess) onSubmitSuccess();
-  }
-
+  
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form action={formAction} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
@@ -193,7 +202,7 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
                     <Input placeholder="e.g., shampoo bottle" {...field} className="text-base py-5 focus:border-primary focus:ring-primary" />
                 </FormControl>
                 <FormDescription>
-                    Provide 1-2 keywords for AI to find a suitable placeholder image later (e.g., "pink lipstick").
+                    Provide 1-2 keywords for AI to find a suitable placeholder image later (e.g., "pink lipstick"). This is used if no image is uploaded.
                 </FormDescription>
                 <FormMessage />
                 </FormItem>
@@ -203,12 +212,12 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
         <FormField
           control={form.control}
           name="imageFile"
-          render={({ field: { onChange, value, ...restField } }) => ( // `value` is not directly used for input file for react-hook-form
+          render={({ field: { onChange, value, ...restField } }) => ( 
             <FormItem>
-              <FormLabel className="text-lg text-accent">Product Image</FormLabel>
+              <FormLabel className="text-lg text-accent">Product Image (Optional)</FormLabel>
               <FormControl>
                 <div className="flex flex-col items-center space-y-4">
-                  <label htmlFor="imageUpload" className="w-full cursor-pointer">
+                  <label htmlFor="imageUploadProduct" className="w-full cursor-pointer">
                     <div className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-input-border rounded-lg hover:border-primary transition-colors bg-muted/50 hover:bg-muted">
                       {imagePreview ? (
                         <NextImage src={imagePreview} alt="Image Preview" width={150} height={150} className="max-h-44 w-auto object-contain rounded-md" />
@@ -222,12 +231,12 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
                     </div>
                   </label>
                   <Input
-                    id="imageUpload"
+                    id="imageUploadProduct"
                     type="file"
                     accept="image/png, image/jpeg, image/webp, image/gif"
-                    onChange={handleImageChange} // Use custom handler
+                    onChange={handleImageChange} 
                     className="hidden"
-                    {...restField} // Spread rest of the field props
+                    {...restField} 
                   />
                 </div>
               </FormControl>
@@ -236,8 +245,8 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
           )}
         />
         
-        <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={isSubmitting}>
-          {isSubmitting ? (
+        <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-6 w-6 animate-spin" />
               {initialData ? "Updating Product..." : "Adding Product..."}

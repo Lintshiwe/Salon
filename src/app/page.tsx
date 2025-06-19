@@ -1,7 +1,7 @@
 
 import { AppShell } from '@/components/layout/AppShell';
 import { HeroSection } from '@/components/home/HeroSection';
-import { services, products, promotedItems as staticPromotedItems } from '@/data/mockData';
+import { services, products, promotedItems as staticPromotedItems, getHeroImageSrc } from '@/data/mockData';
 import type { Service, Product } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge"
 export default function Home() {
   const featuredServices = services.slice(0, 3);
   const featuredProducts = products.slice(0, 3);
+  const heroImageOverride = getHeroImageSrc(); // Get potentially updated hero image
 
   const activePromotedItems = staticPromotedItems.map(promo => {
     if (promo.type === 'service') {
@@ -27,7 +28,7 @@ export default function Home() {
 
   return (
     <AppShell>
-      <HeroSection />
+      <HeroSection heroImageOverride={heroImageOverride} />
       
       <section className="py-16 md:py-24 bg-secondary/50">
         <div className="container">

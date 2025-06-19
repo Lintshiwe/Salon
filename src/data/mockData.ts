@@ -1,7 +1,7 @@
 
 import type { Service, Product, Stylist, GalleryImage, Booking } from '@/lib/types';
 
-export const services: Service[] = [
+export let services: Service[] = [
   { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: 'R750+', duration: '60 mins', imageHint: 'haircut styling' },
   { id: '2', name: 'Luxury Manicure', description: 'Indulge in a pampering manicure with premium products.', price: 'R500', duration: '45 mins', imageHint: 'manicure hands' },
   { id: '3', name: 'Rejuvenating Facial', description: 'Customized facial treatment to refresh and revitalize your skin.', price: 'R1200', duration: '75 mins', imageHint: 'facial spa' },
@@ -10,7 +10,7 @@ export const services: Service[] = [
   { id: '6', name: 'Hair Coloring', description: 'From subtle highlights to bold new colors, expertly applied.', price: 'R1500+', duration: '120 mins', imageHint: 'hair color' },
 ];
 
-export const products: Product[] = [
+export let products: Product[] = [
   { id: 'p1', name: 'Sparkle Shine Shampoo', description: 'Leaves your hair dazzlingly clean and shiny.', price: 'R280', category: 'Hair Care', stockStatus: 'In Stock', imageHint: 'shampoo bottle' },
   { id: 'p2', name: 'Velvet Smooth Conditioner', description: 'Nourishes and detangles for silky smooth hair.', price: 'R300', category: 'Hair Care', stockStatus: 'In Stock', imageHint: 'conditioner bottle' },
   { id: 'p3', name: 'Dream Hold Hair Spray', description: 'Keeps your style in place all day with a touchable hold.', price: 'R250', category: 'Styling', stockStatus: 'Out of Stock', imageHint: 'hairspray can' },
@@ -45,11 +45,20 @@ export const bookings: Booking[] = [
   { id: 'b5', serviceName: 'Deluxe Pedicure', clientName: 'Raquelle', date: '2024-07-22', time: '03:30 PM', status: 'Cancelled' },
 ];
 
-// Items to feature in the "Magical Deals & Delights" section on the homepage.
-// To change promotions, an admin would manually edit this array.
-export const promotedItems: Array<{id: string; type: 'service' | 'product'}> = [
-    { id: services[0].id, type: 'service' }, // Signature Haircut & Style
-    { id: products[0].id, type: 'product' }, // Sparkle Shine Shampoo
-    { id: services[2].id, type: 'service' }, // Rejuvenating Facial
-    { id: products[3].id, type: 'product' }, // Princess Pink Nail Polish
+export let promotedItems: Array<{id: string; type: 'service' | 'product'}> = [
+    { id: services[0].id, type: 'service' }, 
+    { id: products[0].id, type: 'product' }, 
+    { id: services[2].id, type: 'service' }, 
+    { id: products[3].id, type: 'product' },
 ];
+
+// In-memory store for the homepage hero image
+let currentHeroImageSrc: string | null = null;
+
+export function getHeroImageSrc(): string | null {
+  return currentHeroImageSrc;
+}
+
+export function setHeroImageSrc(src: string | null): void {
+  currentHeroImageSrc = src;
+}

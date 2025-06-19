@@ -6,37 +6,74 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { products as initialProducts } from '@/data/mockData';
-import type { Product } from '@/lib/types';
+import { products as initialProductsData } from '@/data/mockData'; // Renamed to avoid conflict
+import type { Product, ActionResponse } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Edit3, PackageCheck, PackageX, Eye, PlusCircle } from 'lucide-react';
+import { ArrowLeft, Edit3, PackageCheck, PackageX, Eye, PlusCircle, Trash2, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { useState, useEffect } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
+import { updateProductStockAction, deleteProductAction } from '@/app/admin/products/actions';
 
 export default function ManageProductsPage() {
   const { toast } = useToast();
-  const [products, setProducts] = useState<Product[]>([]);
+  // This local state is not strictly necessary if revalidatePath works perfectly,
+  // but can be useful for optimistic updates or if revalidation is slow.
+  // For now, we'll rely on server revalidation primarily.
+  const [products, setProducts] = useState<Product[]>(initialProductsData); 
+  const [isPending, startTransition] = useTransition();
+  const [updatingProductId, setUpdatingProductId] = useState<string | null>(null);
 
   useEffect(() => {
-    setProducts(initialProducts);
-  }, []);
+    // If initialProductsData changes due to server revalidation, update local state
+    setProducts(initialProductsData);
+  }, [initialProductsData]);
 
 
   const handleStockStatusChange = (productId: string, newStatus: 'In Stock' | 'Out of Stock') => {
-    setProducts(prevProducts => 
-      prevProducts.map(product => 
-        product.id === productId ? { ...product, stockStatus: newStatus } : product
-      )
-    );
-    toast({
-      title: "Stock Status Updated (Simulated)",
-      description: `Product "${products.find(p=>p.id === productId)?.name}" marked as ${newStatus}. This change is local and won't persist.`,
-      className: "bg-primary text-primary-foreground border-accent",
+    setUpdatingProductId(productId);
+    startTransition(async () => {
+      const result = await updateProductStockAction(productId, newStatus);
+      if (result.success) {
+        toast({
+          title: "Stock Status Updated",
+          description: result.message,
+          className: "bg-primary text-primary-foreground border-accent",
+        });
+        // Data will be revalidated by server action
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Update Failed",
+          description: result.message,
+        });
+      }
+      setUpdatingProductId(null);
     });
-    console.log(`Simulated stock update: Product ${productId} to ${newStatus}`);
   };
+
+  const handleDeleteProduct = (productId: string) => {
+    setUpdatingProductId(productId); // Use same state for loading indicator
+    startTransition(async () => {
+      const result = await deleteProductAction(productId);
+       if (result.success) {
+        toast({
+          title: "Product Deleted!",
+          description: result.message,
+          className: "bg-primary text-primary-foreground border-accent",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Deletion Failed",
+          description: result.message,
+        });
+      }
+      setUpdatingProductId(null);
+    });
+  };
+
 
   return (
     <AppShell>
@@ -63,7 +100,7 @@ export default function ManageProductsPage() {
         <Card className="shadow-xl border-primary/30">
           <CardHeader>
             <CardTitle className="text-2xl text-accent">Current Products</CardTitle>
-            <CardDescription>View, edit details (simulated), and manage stock status.</CardDescription>
+            <CardDescription>View, edit details (simulated), manage stock status, and delete products. Data is updated from server memory.</CardDescription>
           </CardHeader>
           <CardContent>
             {products.length > 0 ? (
@@ -115,8 +152,9 @@ export default function ManageProductsPage() {
                             className="hover:bg-red-500/20 text-red-500 hover:text-red-600" 
                             title="Mark Out of Stock"
                             onClick={() => handleStockStatusChange(product.id, 'Out of Stock')}
+                            disabled={isPending && updatingProductId === product.id}
                           >
-                            <PackageX className="h-4 w-4" />
+                            {isPending && updatingProductId === product.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <PackageX className="h-4 w-4" />}
                             <span className="sr-only">Mark Out of Stock</span>
                           </Button>
                         ) : (
@@ -126,11 +164,23 @@ export default function ManageProductsPage() {
                             className="hover:bg-green-500/20 text-green-500 hover:text-green-600" 
                             title="Mark In Stock"
                             onClick={() => handleStockStatusChange(product.id, 'In Stock')}
+                            disabled={isPending && updatingProductId === product.id}
                           >
-                            <PackageCheck className="h-4 w-4" />
+                             {isPending && updatingProductId === product.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <PackageCheck className="h-4 w-4" />}
                             <span className="sr-only">Mark In Stock</span>
                           </Button>
                         )}
+                         <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="hover:bg-destructive/20 text-destructive hover:text-destructive"
+                          onClick={() => handleDeleteProduct(product.id)}
+                          disabled={isPending && updatingProductId === product.id}
+                          title="Delete Product"
+                        >
+                          {isPending && updatingProductId === product.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                          <span className="sr-only">Delete Product</span>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

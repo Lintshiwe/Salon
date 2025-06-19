@@ -4,7 +4,15 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Sparkles, ArrowRight, ScissorsIcon, Wand2Icon } from 'lucide-react';
 
-export function HeroSection() {
+interface HeroSectionProps {
+  heroImageOverride?: string | null;
+}
+
+export function HeroSection({ heroImageOverride }: HeroSectionProps) {
+  const heroImageSrc = heroImageOverride || "https://placehold.co/600x600/E8A0BF/1E3A8A.png";
+  const heroImageHint = heroImageOverride ? "custom hero image" : "stylized woman face logo dark_blue_on_pink";
+
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-pink-100 via-rose-50 to-purple-100 py-20 md:py-32">
       <div className="container relative z-10">
@@ -31,10 +39,8 @@ export function HeroSection() {
             </div>
           </div>
           
-          {/* Enhanced Image Section */}
           <div className="relative group flex items-center justify-center animate-in fade-in zoom-in-75 duration-1000 delay-200">
             <div className="absolute inset-0 animate-slow-spin [animation-duration:40s]">
-              {/* Orbiting Icons */}
               <Sparkles className="absolute top-[5%] left-[20%] h-10 w-10 text-accent opacity-70 animate-sparkle-subtle [animation-delay:0.5s]" />
               <ScissorsIcon className="absolute top-[25%] right-[5%] h-10 w-10 text-primary opacity-70 animate-subtle-rotate [animation-delay:1s]" />
               <Wand2Icon className="absolute bottom-[10%] left-[10%] h-10 w-10 text-pink-400 opacity-70 animate-gentle-float [animation-delay:1.5s]" />
@@ -48,19 +54,18 @@ export function HeroSection() {
                          group-hover:shadow-[0_0_40px_15px_hsla(var(--primary)/0.3),_0_0_20px_8px_hsla(var(--accent)/0.25)]"
             >
               <Image
-                src="https://placehold.co/600x600/E8A0BF/1E3A8A.png" 
+                src={heroImageSrc} 
                 alt="Stylized woman face logo for Born@Beautiful salon"
                 width={600}
                 height={600}
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-                data-ai-hint="stylized woman face logo dark_blue_on_pink"
+                data-ai-hint={heroImageHint}
                 priority
               />
             </div>
           </div>
         </div>
       </div>
-      {/* Decorative shapes */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-primary/20 rounded-full filter blur-2xl opacity-50 -translate-x-1/2 -translate-y-1/2 animate-pulse [animation-duration:5s]"></div>
       <div className="absolute bottom-0 right-0 w-48 h-48 bg-accent/20 rounded-full filter blur-2xl opacity-50 translate-x-1/3 translate-y-1/3 animate-pulse [animation-duration:6s] [animation-delay:1s]"></div>
     </div>
