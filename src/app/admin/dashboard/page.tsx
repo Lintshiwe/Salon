@@ -2,11 +2,12 @@
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2 } from 'lucide-react';
+import { BarChart, Users, DollarSign, ShoppingBag, CalendarDays, CheckCircle, XCircle, AlertCircle, Edit3, Trash2, PlusCircle, ListChecks, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { bookings as mockBookings } from '@/data/mockData'; // Assuming bookings are added to mockData
+import { bookings as mockBookings } from '@/data/mockData'; 
+import Link from 'next/link';
 
 export default function AdminDashboardPage() {
   const stats = [
@@ -23,7 +24,7 @@ export default function AdminDashboardPage() {
       case 'pending':
         return 'secondary';
       case 'completed':
-        return 'outline'; // Or a custom variant if you define one for success
+        return 'outline'; 
       case 'cancelled':
         return 'destructive';
       default:
@@ -38,7 +39,7 @@ export default function AdminDashboardPage() {
       case 'pending':
         return <AlertCircle className="h-5 w-5 text-yellow-500" />;
       case 'completed':
-         return <CheckCircle className="h-5 w-5 text-blue-500" />; // Using CheckCircle as a generic success
+         return <CheckCircle className="h-5 w-5 text-blue-500" />; 
       case 'cancelled':
         return <XCircle className="h-5 w-5 text-red-500" />;
       default:
@@ -127,9 +128,21 @@ export default function AdminDashboardPage() {
                     <CardTitle className="text-2xl text-accent">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-3">
-                    <Button variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out">Add New Service</Button>
-                    <Button variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out">Manage Products</Button>
-                    <Button variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out">View Client List</Button>
+                    <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
+                        <Link href="/admin/services/add">
+                            <PlusCircle className="mr-3 h-5 w-5 group-hover:animate-pulse"/> Add New Service
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
+                        <Link href="/admin/products/manage">
+                            <ListChecks className="mr-3 h-5 w-5 group-hover:animate-pulse"/> Manage Products
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full justify-start text-lg py-6 border-primary text-primary hover:bg-primary/10 transition-all duration-300 ease-out group">
+                         <Link href="/admin/clients/list">
+                            <UserCheck className="mr-3 h-5 w-5 group-hover:animate-pulse"/> View Client List
+                         </Link>
+                    </Button>
                 </CardContent>
             </Card>
         </div>
