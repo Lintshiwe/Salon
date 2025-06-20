@@ -30,7 +30,7 @@ export function Footer() {
             </Link>
             <p className="text-sm text-center md:text-left">
               Experience the magic of beauty. <br />
-              123 Sparkle Ave, Glamour City, GC 12345
+              Locations in Pretoria & Tembisa.
             </p>
           </div>
 
