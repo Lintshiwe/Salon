@@ -4,6 +4,7 @@
 import { products } from '@/data/mockData';
 import type { Product, ActionResponse } from '@/lib/types';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const ProductSchema = z.object({
@@ -14,6 +15,11 @@ const ProductSchema = z.object({
   stockStatus: z.enum(['In Stock', 'Out of Stock']),
   imageHint: z.string().min(2, { message: "Image hint must be at least 2 characters." }).max(50, { message: "Image hint must be less than 50 characters." }),
 });
+
+const ProductUpdateSchema = ProductSchema.extend({
+  id: z.string().min(1, { message: "Product ID is required for an update." }),
+});
+
 
 export async function addProductAction(
   prevState: ActionResponse | undefined,
@@ -60,6 +66,52 @@ export async function addProductAction(
 
   return { success: true, message: `Product "${newProduct.name}" added successfully!` };
 }
+
+export async function updateProductAction(
+  prevState: ActionResponse | undefined,
+  formData: FormData
+): Promise<ActionResponse> {
+  const rawData = {
+    id: formData.get('id'),
+    name: formData.get('name'),
+    description: formData.get('description'),
+    price: formData.get('price'),
+    category: formData.get('category'),
+    stockStatus: formData.get('stockStatus'),
+    imageHint: formData.get('imageHint'),
+  };
+
+  const parseResult = ProductUpdateSchema.safeParse(rawData);
+
+  if (!parseResult.success) {
+    console.error("Validation failed:", parseResult.error.flatten().fieldErrors);
+    return {
+      success: false,
+      errors: parseResult.error.flatten().fieldErrors,
+      message: "Validation failed. Please check the fields.",
+      fieldValues: rawData as Record<string, string>,
+    };
+  }
+  
+  const updatedProductData = parseResult.data;
+  const productIndex = products.findIndex(p => p.id === updatedProductData.id);
+
+  if (productIndex === -1) {
+    return { success: false, message: 'Product not found to update.' };
+  }
+
+  products[productIndex] = {
+    ...products[productIndex],
+    ...updatedProductData,
+  };
+
+  revalidatePath('/admin/products/manage');
+  revalidatePath('/products');
+  revalidatePath('/');
+
+  redirect('/admin/products/manage');
+}
+
 
 export async function updateProductStockAction(productId: string, newStatus: 'In Stock' | 'Out of Stock'): Promise<ActionResponse> {
   const productIndex = products.findIndex(p => p.id === productId);

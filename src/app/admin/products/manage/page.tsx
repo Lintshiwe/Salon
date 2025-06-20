@@ -100,7 +100,7 @@ export default function ManageProductsPage() {
         <Card className="shadow-xl border-primary/30">
           <CardHeader>
             <CardTitle className="text-2xl text-accent">Current Products</CardTitle>
-            <CardDescription>View, edit details (simulated), manage stock status, and delete products. Data is updated from server memory.</CardDescription>
+            <CardDescription>View, edit details, manage stock status, and delete products. Data is updated from server memory.</CardDescription>
           </CardHeader>
           <CardContent>
             {products.length > 0 ? (
@@ -141,9 +141,11 @@ export default function ManageProductsPage() {
                           <Eye className="h-4 w-4" />
                           <span className="sr-only">View</span>
                         </Button>
-                        <Button variant="ghost" size="icon" className="hover:bg-accent/20 text-accent hover:text-accent" title="Edit (placeholder)">
-                          <Edit3 className="h-4 w-4" />
-                          <span className="sr-only">Edit</span>
+                        <Button asChild variant="ghost" size="icon" className="hover:bg-accent/20 text-accent hover:text-accent" title="Edit">
+                          <Link href={`/admin/products/edit/${product.id}`}>
+                            <Edit3 className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Link>
                         </Button>
                         {product.stockStatus === 'In Stock' ? (
                           <Button 

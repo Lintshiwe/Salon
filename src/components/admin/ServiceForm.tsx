@@ -19,10 +19,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { UploadCloud, Loader2, Wand2 } from "lucide-react";
 import NextImage from "next/image";
-import { useState, ChangeEvent, useEffect, useRef } from "react"; // Added useRef
+import { useState, ChangeEvent, useEffect, useRef } from "react";
 import type { Service, ActionResponse } from "@/lib/types";
-import { addServiceAction } from "@/app/admin/services/actions";
-import { useActionState } from "react"; // Updated import
+import { useActionState } from "react";
 
 const serviceFormSchema = z.object({
   name: z.string().min(3, { message: "Service name must be at least 3 characters." }),
@@ -38,17 +37,18 @@ const serviceFormSchema = z.object({
 type ServiceFormValues = z.infer<typeof serviceFormSchema>;
 
 interface ServiceFormProps {
-  initialData?: Partial<Service>;
+  initialData?: Service;
+  action: (prevState: ActionResponse | undefined, formData: FormData) => Promise<ActionResponse>;
   onSubmitSuccess?: () => void;
 }
 
 const initialState: ActionResponse = { success: false };
 
-export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) {
+export function ServiceForm({ initialData, action, onSubmitSuccess }: ServiceFormProps) {
   const { toast } = useToast();
-  const [state, formAction, isPending] = useActionState(addServiceAction, initialState); // Updated to useActionState
+  const [state, formAction, isPending] = useActionState(action, initialState);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageHint ? `https://placehold.co/600x400.png?text=${initialData.name}` : null);
-  const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input
+  const fileInputRef = useRef<HTMLInputElement>(null);
  
   const form = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceFormSchema),
@@ -64,18 +64,30 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
 
  useEffect(() => {
     if (state.success) {
-      toast({
-        title: "Service Added! ✨",
-        description: state.message,
-        className: "bg-primary text-primary-foreground border-accent",
-      });
-      form.reset({ name: "", description: "", price: "", duration: "", imageFile: null, imageHint: "" });
-      setImagePreview(null);
-      if (fileInputRef.current) { // Clear file input
-        fileInputRef.current.value = "";
+      // For updates, the action handles redirection. Toasts are for add page.
+      if (!initialData) {
+        toast({
+          title: "Service Added! ✨",
+          description: state.message,
+          className: "bg-primary text-primary-foreground border-accent",
+        });
+        form.reset({ name: "", description: "", price: "", duration: "", imageFile: null, imageHint: "" });
+        setImagePreview(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } else {
+        // This toast might not be visible as the page will redirect.
+        // It's here for completeness in case the redirect logic changes.
+        toast({
+          title: "Service Updated! ✨",
+          description: state.message || "Service details have been successfully updated.",
+          className: "bg-primary text-primary-foreground border-accent",
+        });
       }
       if (onSubmitSuccess) onSubmitSuccess();
-    } else if (state.message && !state.success && state !== initialState) { // Ensure state is not initial before showing error
+
+    } else if (state.message && !state.success && state !== initialState) {
        toast({
         variant: "destructive",
         title: "Operation Failed",
@@ -89,7 +101,7 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
         });
       }
     }
-  }, [state, toast, form, onSubmitSuccess]);
+  }, [state, toast, form, onSubmitSuccess, initialData]);
 
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -110,6 +122,8 @@ export function ServiceForm({ initialData, onSubmitSuccess }: ServiceFormProps) 
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-8">
+        {initialData?.id && <input type="hidden" name="id" value={initialData.id} />}
+
         <FormField
           control={form.control}
           name="name"

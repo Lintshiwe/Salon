@@ -20,10 +20,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { UploadCloud, Loader2, PackagePlus } from "lucide-react";
 import NextImage from "next/image";
-import { useState, ChangeEvent, useEffect, useRef } from "react"; // Added useRef
+import { useState, ChangeEvent, useEffect, useRef } from "react";
 import type { Product, ActionResponse } from "@/lib/types";
-import { addProductAction } from "@/app/admin/products/actions";
-import { useActionState } from "react"; // Updated import
+import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 
 const productFormSchema = z.object({
   name: z.string().min(3, { message: "Product name must be at least 3 characters." }),
@@ -40,17 +40,19 @@ const productFormSchema = z.object({
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
 interface ProductFormProps {
-  initialData?: Partial<Product>;
-  onSubmitSuccess?: () => void;
+  initialData?: Product;
+  action: (prevState: ActionResponse | undefined, formData: FormData) => Promise<ActionResponse>;
+  onSuccess?: () => void;
 }
 
 const initialState: ActionResponse = { success: false };
 
-export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) {
+export function ProductForm({ initialData, action, onSuccess }: ProductFormProps) {
   const { toast } = useToast();
-  const [state, formAction, isPending] = useActionState(addProductAction, initialState); // Updated to useActionState
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState(action, initialState);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageHint ? `https://placehold.co/600x400.png?text=${initialData.name}` : null);
-  const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -67,18 +69,28 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
 
   useEffect(() => {
     if (state.success) {
-      toast({
-        title: "Product Added! ✨",
-        description: state.message,
-        className: "bg-primary text-primary-foreground border-accent",
-      });
-      form.reset({ name: "", description: "", price: "", category: "", stockStatus: 'In Stock', imageFile: null, imageHint: "" });
-      setImagePreview(null);
-      if (fileInputRef.current) { // Clear file input
-        fileInputRef.current.value = "";
+      // For updates, the action handles redirection. Toasts are for add page.
+      if (!initialData) {
+        toast({
+          title: "Product Added! ✨",
+          description: state.message,
+          className: "bg-primary text-primary-foreground border-accent",
+        });
+        form.reset({ name: "", description: "", price: "", category: "", stockStatus: 'In Stock', imageFile: null, imageHint: "" });
+        setImagePreview(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } else {
+        toast({
+          title: "Product Updated! ✨",
+          description: state.message || "Product details have been successfully updated.",
+          className: "bg-primary text-primary-foreground border-accent",
+        });
       }
-      if (onSubmitSuccess) onSubmitSuccess();
-    } else if (state.message && !state.success && state !== initialState) { // Ensure state is not initial before showing error
+      if (onSuccess) onSuccess();
+
+    } else if (state.message && !state.success && state !== initialState) {
       toast({
         variant: "destructive",
         title: "Operation Failed",
@@ -92,7 +104,7 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
         });
       }
     }
-  }, [state, toast, form, onSubmitSuccess]);
+  }, [state, toast, form, onSuccess, initialData]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -112,6 +124,8 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
   return (
     <Form {...form}>
       <form action={formAction} className="space-y-8">
+        {initialData?.id && <input type="hidden" name="id" value={initialData.id} />}
+
         <FormField
           control={form.control}
           name="name"

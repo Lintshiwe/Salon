@@ -50,15 +50,6 @@ export default function ListServicesPage() {
     });
   };
 
-  const handleEditService = (serviceName: string) => {
-    toast({
-      title: "Edit Service",
-      description: `Simulating: Opening edit form for "${serviceName}"... (Full feature coming soon!)`,
-      className: "bg-primary text-primary-foreground border-accent",
-    });
-  };
-
-
   return (
     <AppShell>
       <PageHeader 
@@ -126,14 +117,16 @@ export default function ListServicesPage() {
                           <span className="sr-only">View</span>
                         </Button>
                         <Button 
+                          asChild
                           variant="ghost" 
                           size="icon" 
                           className="hover:bg-accent/20 text-accent hover:text-accent" 
                           title="Edit Service"
-                          onClick={() => handleEditService(service.name)}
                         >
-                          <Edit3 className="h-4 w-4" />
-                          <span className="sr-only">Edit</span>
+                          <Link href={`/admin/services/edit/${service.id}`}>
+                            <Edit3 className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Link>
                         </Button>
                         <Button 
                           variant="ghost" 
