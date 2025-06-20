@@ -68,7 +68,7 @@ export default function AdminDashboardPage() {
   const handleBookingSettingsClick = (bookingId: string) => {
     toast({
       title: "Manage Booking",
-      description: `Booking management features for booking ID ${bookingId} (like edit/view details) are coming soon!`,
+      description: `Simulating: Opening management options for booking ID ${bookingId}... (Full feature coming soon!)`,
       className: "bg-primary text-primary-foreground border-accent",
     });
   };
@@ -169,10 +169,10 @@ export default function AdminDashboardPage() {
                                   size="icon" 
                                   className="hover:bg-accent/20 text-accent hover:text-accent mr-1"
                                   onClick={() => handleBookingSettingsClick(booking.id)}
-                                  title="Manage Booking (placeholder)"
+                                  title="Manage Booking"
                                 >
                                     <Settings className="h-4 w-4" />
-                                    <span className="sr-only">Edit</span>
+                                    <span className="sr-only">Manage Booking</span>
                                 </Button>
                             </TableCell>
                             </TableRow>

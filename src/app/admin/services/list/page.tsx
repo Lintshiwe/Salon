@@ -16,7 +16,7 @@ import React, { useState, useTransition } from 'react';
 
 export default function ListServicesPage() {
   const { toast } = useToast();
-  const [services, setServices] = useState<Service[]>(initialServices); 
+  // initialServices will be updated by server action revalidation
   const [isPending, startTransition] = useTransition();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -45,7 +45,7 @@ export default function ListServicesPage() {
   const handleViewService = (serviceName: string) => {
     toast({
       title: "View Service",
-      description: `Viewing details for "${serviceName}" feature is coming soon!`,
+      description: `Simulating: Viewing details for "${serviceName}"... (Full feature coming soon!)`,
       className: "bg-primary text-primary-foreground border-accent",
     });
   };
@@ -53,7 +53,7 @@ export default function ListServicesPage() {
   const handleEditService = (serviceName: string) => {
     toast({
       title: "Edit Service",
-      description: `Editing "${serviceName}" feature is coming soon! You can delete and re-add services for now.`,
+      description: `Simulating: Opening edit form for "${serviceName}"... (Full feature coming soon!)`,
       className: "bg-primary text-primary-foreground border-accent",
     });
   };
