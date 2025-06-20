@@ -19,13 +19,13 @@ export let products: Product[] = [
   { id: 'p6', name: 'Diamond Dust Body Lotion', description: 'Hydrating lotion with a subtle shimmer.', price: 'R400', category: 'Body Care', stockStatus: 'Out of Stock', imageHint: 'lotion bottle' },
 ];
 
-export const stylists: Stylist[] = [
+export let stylists: Stylist[] = [
   { id: 's1', name: 'Bella Sparkle', bio: 'Bella brings a touch of magic to every hairstyle. With 10 years of experience, she specializes in creative coloring and glamorous updos.', specializations: ['Creative Coloring', 'Updos', 'Bridal Hair'], imageHint: 'hairstylist portrait' },
   { id: 's2', name: 'Ken Dazzle', bio: 'Ken is a master of precision cuts and modern styling. He loves transforming looks and making clients feel their absolute best.', specializations: ['Precision Cuts', 'Men\'s Grooming', 'Modern Styles'], imageHint: 'male stylist' },
   { id: 's3', name: 'Daisy Glam', bio: 'Daisy is passionate about skincare and makeup. Her facials are legendary, and she can create the perfect makeup look for any occasion.', specializations: ['Luxury Facials', 'Makeup Artistry', 'Brow Shaping'], imageHint: 'makeup-artist smile' },
 ];
 
-export const galleryImages: GalleryImage[] = [
+export let galleryImages: GalleryImage[] = [
   { id: 'g1', alt: 'Stunning blonde balayage', category: 'Recent Work', imageHint: 'blonde balayage' },
   { id: 'g2', alt: 'Elegant bridal updo', category: 'Recent Work', imageHint: 'bridal updo' },
   { id: 'g3', alt: 'Vibrant pink hair color', category: 'Recent Work', imageHint: 'pink hair' },
@@ -37,7 +37,7 @@ export const galleryImages: GalleryImage[] = [
   { id: 'g9', alt: 'Close up of intricate nail art', category: 'Recent Work', imageHint: 'nail art' },
 ];
 
-export const bookings: Booking[] = [
+export let bookings: Booking[] = [
   { id: 'b1', serviceName: 'Signature Haircut & Style', clientName: 'Barbie Malibu', date: '2024-07-15', time: '10:00 AM', status: 'Confirmed' },
   { id: 'b2', serviceName: 'Luxury Manicure', clientName: 'Skipper Roberts', date: '2024-07-16', time: '02:00 PM', status: 'Pending' },
   { id: 'b3', serviceName: 'Rejuvenating Facial', clientName: 'Midge Hadley', date: '2024-07-18', time: '11:30 AM', status: 'Completed' },

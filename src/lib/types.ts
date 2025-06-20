@@ -26,6 +26,7 @@ export interface Stylist {
   bio: string;
   specializations: string[];
   imageHint: string;
+  imageFile?: File;
 }
 
 export interface GalleryImage {
