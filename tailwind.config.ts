@@ -11,8 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Montserrat', 'sans-serif'],
-        headline: ['Pacifico', 'cursive'],
+        body: ['var(--font-montserrat)', 'sans-serif'],
+        headline: ['var(--font-pacifico)', 'cursive'],
         code: ['monospace'],
       },
       colors: {
