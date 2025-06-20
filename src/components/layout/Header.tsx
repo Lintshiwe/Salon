@@ -19,9 +19,14 @@ export function Header() {
       <div className="container flex h-20 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 group">
           <Sparkles className="h-8 w-8 text-primary transition-transform group-hover:scale-110 group-hover:animate-sparkle-pulse" />
-          <span className="font-headline text-3xl font-bold text-primary tracking-wider">
-            Born@Beautiful
-          </span>
+          <div>
+            <span className="font-headline text-3xl font-bold text-primary tracking-wider">
+              Born@Beautiful
+            </span>
+            <p className="text-xs text-accent tracking-widest -mt-1">
+              Nail & Beauty Salon
+            </p>
+          </div>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
