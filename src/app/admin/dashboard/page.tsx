@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { bookings as mockBookings } from '@/data/mockData'; 
 import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
-import { useActionState } from 'react'; // Updated import
+import { useActionState } from 'react';
 import { updateHomepageHeroImageAction } from '@/app/admin/homepageActions';
 import type { ActionResponse } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
@@ -20,7 +20,6 @@ const initialHeroImageFormState: ActionResponse = { success: false };
 
 export default function AdminDashboardPage() {
   const { toast } = useToast();
-  // Use useActionState from 'react'
   const [heroImageFormState, heroImageFormAction, isHeroImageSubmitting] = useActionState(
     updateHomepageHeroImageAction, 
     initialHeroImageFormState
@@ -64,6 +63,14 @@ export default function AdminDashboardPage() {
       default:
         return <CalendarDays className="h-5 w-5 text-muted-foreground" />;
     }
+  };
+
+  const handleBookingSettingsClick = (bookingId: string) => {
+    toast({
+      title: "Manage Booking",
+      description: `Booking management features for booking ID ${bookingId} (like edit/view details) are coming soon!`,
+      className: "bg-primary text-primary-foreground border-accent",
+    });
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,7 +164,13 @@ export default function AdminDashboardPage() {
                             <TableCell>{booking.date}</TableCell>
                             <TableCell>{booking.time}</TableCell>
                             <TableCell className="text-right">
-                                <Button variant="ghost" size="icon" className="hover:bg-accent/20 text-accent hover:text-accent mr-1">
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="hover:bg-accent/20 text-accent hover:text-accent mr-1"
+                                  onClick={() => handleBookingSettingsClick(booking.id)}
+                                  title="Manage Booking (placeholder)"
+                                >
                                     <Settings className="h-4 w-4" />
                                     <span className="sr-only">Edit</span>
                                 </Button>

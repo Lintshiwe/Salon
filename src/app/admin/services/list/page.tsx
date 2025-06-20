@@ -16,7 +16,7 @@ import React, { useState, useTransition } from 'react';
 
 export default function ListServicesPage() {
   const { toast } = useToast();
-  const [services, setServices] = useState<Service[]>(initialServices); // Keep local state for immediate UI updates if needed
+  const [services, setServices] = useState<Service[]>(initialServices); 
   const [isPending, startTransition] = useTransition();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -30,9 +30,7 @@ export default function ListServicesPage() {
           description: result.message,
           className: "bg-primary text-primary-foreground border-accent",
         });
-        // The page will be revalidated by the server action, re-fetching data.
-        // For an even smoother UX, you could update local state here too:
-        // setServices(prev => prev.filter(s => s.id !== serviceId));
+        // Data is revalidated by server action
       } else {
         toast({
           variant: "destructive",
@@ -43,6 +41,23 @@ export default function ListServicesPage() {
       setDeletingId(null);
     });
   };
+
+  const handleViewService = (serviceName: string) => {
+    toast({
+      title: "View Service",
+      description: `Viewing details for "${serviceName}" feature is coming soon!`,
+      className: "bg-primary text-primary-foreground border-accent",
+    });
+  };
+
+  const handleEditService = (serviceName: string) => {
+    toast({
+      title: "Edit Service",
+      description: `Editing "${serviceName}" feature is coming soon! You can delete and re-add services for now.`,
+      className: "bg-primary text-primary-foreground border-accent",
+    });
+  };
+
 
   return (
     <AppShell>
@@ -72,7 +87,7 @@ export default function ListServicesPage() {
             <CardDescription>View, edit, or delete existing services. Data is updated from server memory.</CardDescription>
           </CardHeader>
           <CardContent>
-            {initialServices.length > 0 ? ( // Use initialServices from mockData, as it's updated by server actions
+            {initialServices.length > 0 ? ( 
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -100,11 +115,23 @@ export default function ListServicesPage() {
                       <TableCell>{service.price}</TableCell>
                       <TableCell>{service.duration || 'N/A'}</TableCell>
                       <TableCell className="text-right space-x-1">
-                        <Button variant="ghost" size="icon" className="hover:bg-blue-500/20 text-blue-500 hover:text-blue-600" title="View (Placeholder)">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="hover:bg-blue-500/20 text-blue-500 hover:text-blue-600" 
+                          title="View Details"
+                          onClick={() => handleViewService(service.name)}
+                        >
                           <Eye className="h-4 w-4" />
                           <span className="sr-only">View</span>
                         </Button>
-                        <Button variant="ghost" size="icon" className="hover:bg-accent/20 text-accent hover:text-accent" title="Edit (Placeholder)">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="hover:bg-accent/20 text-accent hover:text-accent" 
+                          title="Edit Service"
+                          onClick={() => handleEditService(service.name)}
+                        >
                           <Edit3 className="h-4 w-4" />
                           <span className="sr-only">Edit</span>
                         </Button>
