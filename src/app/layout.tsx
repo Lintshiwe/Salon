@@ -7,6 +7,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Born2bBeautiful',
   description: 'Your destination for beauty and style.',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  }
 };
 
 export default function RootLayout({
