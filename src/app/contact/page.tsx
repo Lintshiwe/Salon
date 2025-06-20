@@ -48,7 +48,7 @@ export default function ContactPage() {
               <Mail className="h-10 w-10 text-accent mt-1 shrink-0" />
               <div>
                 <h3 className="text-2xl font-semibold text-primary mb-1">Email Us</h3>
-                <p className="text-lg text-foreground/80">hello@bornatbeautiful.com</p>
+                <p className="text-lg text-foreground/80">hello@born2bbeautiful.com</p>
               </div>
             </div>
 

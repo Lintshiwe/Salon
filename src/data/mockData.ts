@@ -32,7 +32,7 @@ export const galleryImages: GalleryImage[] = [
   { id: 'g4', alt: 'Chic salon interior with pink accents', category: 'Salon Interior', imageHint: 'salon interior' },
   { id: 'g5', alt: 'Comfortable styling stations', category: 'Salon Interior', imageHint: 'styling station' },
   { id: 'g6', alt: 'Welcoming reception area', category: 'Salon Interior', imageHint: 'salon reception' },
-  { id: 'g7', alt: 'The Born@Beautiful Team smiling', category: 'Team Members', imageHint: 'salon team' },
+  { id: 'g7', alt: 'The Born2bBeautiful Team smiling', category: 'Team Members', imageHint: 'salon team' },
   { id: 'g8', alt: 'Stylist performing a haircut', category: 'Team Members', imageHint: 'stylist working' },
   { id: 'g9', alt: 'Close up of intricate nail art', category: 'Recent Work', imageHint: 'nail art' },
 ];

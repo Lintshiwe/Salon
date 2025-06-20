@@ -140,7 +140,7 @@ export default function Home() {
           <div className="text-center mb-12">
             <h2 className="font-headline text-4xl md:text-5xl text-primary mb-3">Shop Our Favorites</h2>
             <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-              Take home a piece of Born@Beautiful magic with our curated product selection.
+              Take home a piece of Born2bBeautiful magic with our curated product selection.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 content-animate-in">

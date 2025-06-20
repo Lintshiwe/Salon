@@ -1,3 +1,4 @@
+
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ServiceItem } from '@/components/services/ServiceItem';
@@ -8,7 +9,7 @@ export default function ServicesPage() {
     <AppShell>
       <PageHeader 
         title="Our Sparkling Services"
-        description="Discover a wide range of treatments designed to make you look and feel Born@Beautiful. From transformative hair styling to relaxing spa experiences, we have something for everyone."
+        description="Discover a wide range of treatments designed to make you look and feel Born2bBeautiful. From transformative hair styling to relaxing spa experiences, we have something for everyone."
       />
       <div className="container py-12 md:py-16">
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 content-animate-in">

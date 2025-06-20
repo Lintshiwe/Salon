@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Menu, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,7 +22,7 @@ export function Header() {
           <Sparkles className="h-8 w-8 text-primary transition-transform group-hover:scale-110 group-hover:animate-sparkle-pulse" />
           <div>
             <span className="font-headline text-3xl font-bold text-primary tracking-wider">
-              Born@Beautiful
+              Born2bBeautiful
             </span>
             <p className="text-xs text-accent tracking-widest -mt-1">
               Nail & Beauty Salon

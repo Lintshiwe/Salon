@@ -1,3 +1,4 @@
+
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StylistProfile } from '@/components/stylists/StylistProfile';
@@ -8,7 +9,7 @@ export default function StylistsPage() {
     <AppShell>
       <PageHeader 
         title="Meet Our Glam Squad"
-        description="Our talented and passionate stylists are dedicated to making you look and feel your absolute best. Get to know the artists behind Born@Beautiful."
+        description="Our talented and passionate stylists are dedicated to making you look and feel your absolute best. Get to know the artists behind Born2bBeautiful."
       />
       <div className="container py-12 md:py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 content-animate-in">

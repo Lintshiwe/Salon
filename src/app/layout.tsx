@@ -5,7 +5,7 @@ import { AnimatedBackground } from '@/components/layout/AnimatedBackground';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Born@Beautiful',
+  title: 'Born2bBeautiful',
   description: 'Your destination for beauty and style.',
 };
 

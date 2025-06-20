@@ -10,14 +10,14 @@ export default function ViewClientsPage() {
     <AppShell>
       <PageHeader 
         title="View Client List"
-        description="Manage your cherished Born@Beautiful clientele."
+        description="Manage your cherished Born2bBeautiful clientele."
       />
       <div className="container py-12 md:py-16 text-center content-animate-in">
         <p className="text-xl mb-8 text-foreground/80">Client management tools are coming soon. Get ready to connect!</p>
         <div className="max-w-lg mx-auto bg-card p-8 rounded-lg shadow-xl border border-primary/20">
             <Users className="h-16 w-16 mx-auto text-primary mb-6 animate-pulse"/>
             <h3 className="text-2xl font-semibold text-primary mb-6">Client Directory Central</h3>
-            <p className="text-muted-foreground mb-6">This will be your go-to place to view client details, booking history, preferences, and more. All designed to help you provide the most personalized Born@Beautiful experience!</p>
+            <p className="text-muted-foreground mb-6">This will be your go-to place to view client details, booking history, preferences, and more. All designed to help you provide the most personalized Born2bBeautiful experience!</p>
              <ul className="space-y-2 text-left list-disc list-inside text-muted-foreground">
                 <li>View client contact information.</li>
                 <li>See appointment history.</li>

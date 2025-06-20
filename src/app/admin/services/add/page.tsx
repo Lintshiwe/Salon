@@ -10,7 +10,7 @@ export default function AddServicePage() {
     <AppShell>
       <PageHeader 
         title="Add New Service"
-        description="Create a new glamorous service for Born@Beautiful."
+        description="Create a new glamorous service for Born2bBeautiful."
       />
       <div className="container py-12 md:py-16">
         <Card className="max-w-2xl mx-auto shadow-xl border-primary/30">

@@ -111,7 +111,7 @@ export default function AdminDashboardPage() {
     <AppShell>
       <PageHeader 
         title="Admin Dashboard"
-        description="Welcome back, Admin! Here's an overview of Born@Beautiful."
+        description="Welcome back, Admin! Here's an overview of Born2bBeautiful."
       />
       <div className="container py-12 md:py-16">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12 content-animate-in">

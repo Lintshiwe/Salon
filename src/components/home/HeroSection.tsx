@@ -23,7 +23,7 @@ export function HeroSection({ heroImageOverride }: HeroSectionProps) {
               <span className="block text-accent">Inner Sparkle!</span>
             </h1>
             <p className="text-xl lg:text-2xl text-foreground/80 mb-10 max-w-lg mx-auto md:mx-0">
-              Welcome to Born@Beautiful, where dreams get a makeover. Discover a world of glamour, style, and pampering designed just for you.
+              Welcome to Born2bBeautiful, where dreams get a makeover. Discover a world of glamour, style, and pampering designed just for you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Button asChild size="lg" className="text-lg px-8 py-6 sparkle-hover transform hover:scale-105 transition-transform duration-300 group">
@@ -55,7 +55,7 @@ export function HeroSection({ heroImageOverride }: HeroSectionProps) {
             >
               <Image
                 src={heroImageSrc} 
-                alt="Stylized woman face logo for Born@Beautiful salon"
+                alt="Stylized woman face logo for Born2bBeautiful salon"
                 width={600}
                 height={600}
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"

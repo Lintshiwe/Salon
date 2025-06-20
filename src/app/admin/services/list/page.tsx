@@ -54,7 +54,7 @@ export default function ListServicesPage() {
     <AppShell>
       <PageHeader 
         title="Manage Services"
-        description="Oversee all the glamorous services offered at Born@Beautiful."
+        description="Oversee all the glamorous services offered at Born2bBeautiful."
       />
       <div className="container py-12 md:py-16">
         <div className="flex justify-between items-center mb-8">

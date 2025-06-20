@@ -9,14 +9,14 @@ export default function AdminLoginPage() {
       <div className="absolute top-4 left-4 z-10">
         <Link href="/" className="flex items-center space-x-2 group text-primary hover:text-accent transition-colors">
           <Sparkles className="h-6 w-6 transition-transform group-hover:scale-110 group-hover:animate-sparkle-pulse" />
-          <span className="font-headline text-xl">Born@Beautiful</span>
+          <span className="font-headline text-xl">Born2bBeautiful</span>
         </Link>
       </div>
       <div className="w-full max-w-md content-animate-in animate-in fade-in slide-in-from-bottom-10 duration-700 z-10">
         <AdminLoginForm />
       </div>
       <p className="mt-8 text-center text-muted-foreground z-10">
-        &copy; {new Date().getFullYear()} Born@Beautiful. Admin Portal.
+        &copy; {new Date().getFullYear()} Born2bBeautiful. Admin Portal.
       </p>
        {/* Optional: Decorative elements for more flair */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-primary/10 rounded-full filter blur-3xl opacity-50 animate-pulse"></div>
