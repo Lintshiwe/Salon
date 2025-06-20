@@ -1,5 +1,5 @@
 
-import type { Service, Product, Stylist, GalleryImage, Booking } from '@/lib/types';
+import type { Service, Product, Stylist, GalleryImage, Booking, PromotedItemIdentifier } from '@/lib/types';
 
 export let services: Service[] = [
   { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: 'R750+', duration: '60 mins', imageHint: 'haircut styling' },
@@ -45,7 +45,7 @@ export const bookings: Booking[] = [
   { id: 'b5', serviceName: 'Deluxe Pedicure', clientName: 'Raquelle', date: '2024-07-22', time: '03:30 PM', status: 'Cancelled' },
 ];
 
-export let promotedItems: Array<{id: string; type: 'service' | 'product'}> = [
+export let promotedItems: PromotedItemIdentifier[] = [
     { id: services[0].id, type: 'service' }, 
     { id: products[0].id, type: 'product' }, 
     { id: services[2].id, type: 'service' }, 

@@ -57,3 +57,8 @@ export interface ActionResponse {
   errors?: Record<string, string[] | undefined>;
   fieldValues?: Record<string, string>;
 }
+
+export type PromotedItemIdentifier = {
+  id: string;
+  type: 'service' | 'product';
+};
