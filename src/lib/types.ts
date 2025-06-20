@@ -62,4 +62,5 @@ export interface ActionResponse {
 export type PromotedItemIdentifier = {
   id: string;
   type: 'service' | 'product';
+  discountPercentage?: number;
 };

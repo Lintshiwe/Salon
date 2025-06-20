@@ -13,17 +13,17 @@ import { Badge } from "@/components/ui/badge"
 export default function Home() {
   const featuredServices = services.slice(0, 3);
   const featuredProducts = products.slice(0, 3);
-  const heroImageOverride = getHeroImageSrc(); // Get potentially updated hero image
+  const heroImageOverride = getHeroImageSrc(); 
 
   const activePromotedItems = staticPromotedItems.map(promo => {
     if (promo.type === 'service') {
       const service = services.find(s => s.id === promo.id);
-      return service ? { ...service, type: 'service' as const } : null;
+      return service ? { ...service, type: 'service' as const, discountPercentage: promo.discountPercentage } : null;
     } else {
       const product = products.find(p => p.id === promo.id);
-      return product ? { ...product, type: 'product' as const } : null;
+      return product ? { ...product, type: 'product' as const, discountPercentage: promo.discountPercentage } : null;
     }
-  }).filter(item => item !== null) as Array<(Service & {type: 'service'}) | (Product & {type: 'product'})>;
+  }).filter(item => item !== null) as Array<(Service & {type: 'service', discountPercentage?: number}) | (Product & {type: 'product', discountPercentage?: number})>;
 
 
   return (
@@ -81,55 +81,72 @@ export default function Home() {
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {activePromotedItems.map((item, index) => (
-                <Card 
-                  key={item.id + '-' + item.type} 
-                  className="overflow-hidden shadow-2xl hover:shadow-[0_0_35px_10px_hsla(var(--primary)/0.4)] bg-card border-2 border-transparent hover:border-primary/70 transition-all duration-500 ease-out transform hover:-translate-y-2 group animate-in fade-in zoom-in-90"
-                  style={{ animationDelay: `${index * 150}ms` }}
-                >
-                  <CardHeader className="p-0 relative">
-                    <Image 
-                      src={`https://placehold.co/600x400.png`}
-                      alt={item.name}
-                      width={600}
-                      height={400}
-                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
-                      data-ai-hint={item.imageHint}
-                    />
-                    <div className="absolute top-3 right-3 bg-accent text-accent-foreground p-2 rounded-full shadow-lg transform transition-transform group-hover:scale-110">
-                      <Sparkles className="h-5 w-5 animate-sparkle-pulse animation-delay-500" />
-                    </div>
-                     {item.type === 'product' && item.stockStatus === 'Out of Stock' && (
-                        <Badge variant="destructive" className="absolute top-3 left-3 text-sm px-3 py-1.5">Out of Stock</Badge>
+              {activePromotedItems.map((item, index) => {
+                const hasDiscount = item.discountPercentage && item.discountPercentage > 0;
+                const originalPriceNum = parseFloat(item.price.replace('R', ''));
+                const discountedPrice = hasDiscount ? originalPriceNum - (originalPriceNum * item.discountPercentage! / 100) : originalPriceNum;
+
+                return (
+                  <Card 
+                    key={item.id + '-' + item.type} 
+                    className="overflow-hidden shadow-2xl hover:shadow-[0_0_35px_10px_hsla(var(--primary)/0.4)] bg-card border-2 border-transparent hover:border-primary/70 transition-all duration-500 ease-out transform hover:-translate-y-2 group animate-in fade-in zoom-in-90"
+                    style={{ animationDelay: `${index * 150}ms` }}
+                  >
+                    <CardHeader className="p-0 relative">
+                      <Image 
+                        src={`https://placehold.co/600x400.png`}
+                        alt={item.name}
+                        width={600}
+                        height={400}
+                        className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                        data-ai-hint={item.imageHint}
+                      />
+                      {hasDiscount && (
+                        <Badge variant="destructive" className="absolute top-3 right-3 text-sm px-3 py-1.5 z-10 font-bold">
+                          {item.discountPercentage}% OFF
+                        </Badge>
                       )}
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <CardTitle className="text-xl font-semibold text-accent group-hover:text-primary transition-colors duration-300 mb-2 h-14 overflow-hidden">{item.name}</CardTitle>
-                    <p className="text-2xl font-bold text-primary mb-3">{item.price.startsWith('R') ? item.price : `R${item.price}`}</p>
-                    {item.type === 'service' && 'duration' in item && item.duration && <p className="text-xs text-muted-foreground mb-2">{item.duration}</p>}
-                    {item.type === 'product' && 'category' in item && item.category && <p className="text-xs text-muted-foreground mb-2">{item.category}</p>}
-                  </CardContent>
-                  <CardFooter className="p-6 pt-0">
-                    {item.type === 'service' ? (
-                      <Button asChild size="lg" className="w-full sparkle-hover group/btn transition-all duration-300 ease-out">
-                        <Link href={`/booking?service=${encodeURIComponent(item.name)}&price=${encodeURIComponent(item.price)}&duration=${encodeURIComponent('duration' in item ? item.duration || '' : '')}`}>
-                          Book Now <ArrowRight className="ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform"/>
-                        </Link>
-                      </Button>
-                    ) : (
-                      <Button 
-                        size="lg" 
-                        className="w-full sparkle-hover group/btn transition-all duration-300 ease-out"
-                        disabled={item.stockStatus === 'Out of Stock'}
-                      >
-                        {item.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
-                        {item.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
-                        {item.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-5 w-5"/>}
-                      </Button>
-                    )}
-                  </CardFooter>
-                </Card>
-              ))}
+                       {item.type === 'product' && item.stockStatus === 'Out of Stock' && (
+                          <Badge variant="destructive" className="absolute top-3 left-3 text-sm px-3 py-1.5">Out of Stock</Badge>
+                        )}
+                    </CardHeader>
+                    <CardContent className="p-6">
+                      <CardTitle className="text-xl font-semibold text-accent group-hover:text-primary transition-colors duration-300 mb-2 h-14 overflow-hidden">{item.name}</CardTitle>
+                      
+                      {hasDiscount ? (
+                        <div className="flex items-baseline gap-2 mb-3">
+                          <p className="text-lg font-bold text-muted-foreground line-through">{item.price.startsWith('R') ? item.price : `R${item.price}`}</p>
+                          <p className="text-2xl font-bold text-primary">R{discountedPrice.toFixed(2)}</p>
+                        </div>
+                      ) : (
+                        <p className="text-2xl font-bold text-primary mb-3">{item.price.startsWith('R') ? item.price : `R${item.price}`}</p>
+                      )}
+
+                      {item.type === 'service' && 'duration' in item && item.duration && <p className="text-xs text-muted-foreground mb-2">{item.duration}</p>}
+                      {item.type === 'product' && 'category' in item && item.category && <p className="text-xs text-muted-foreground mb-2">{item.category}</p>}
+                    </CardContent>
+                    <CardFooter className="p-6 pt-0">
+                      {item.type === 'service' ? (
+                        <Button asChild size="lg" className="w-full sparkle-hover group/btn transition-all duration-300 ease-out">
+                          <Link href={`/booking?service=${encodeURIComponent(item.name)}&price=${encodeURIComponent(discountedPrice.toFixed(2))}&duration=${encodeURIComponent('duration' in item ? item.duration || '' : '')}`}>
+                            Book Now <ArrowRight className="ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform"/>
+                          </Link>
+                        </Button>
+                      ) : (
+                        <Button 
+                          size="lg" 
+                          className="w-full sparkle-hover group/btn transition-all duration-300 ease-out"
+                          disabled={item.stockStatus === 'Out of Stock'}
+                        >
+                          {item.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
+                          {item.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
+                          {item.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-5 w-5"/>}
+                        </Button>
+                      )}
+                    </CardFooter>
+                  </Card>
+                )
+              })}
             </div>
           </div>
         </section>

@@ -4,6 +4,7 @@
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { services as allServices, products as allProducts, promotedItems as currentPromotedItems } from '@/data/mockData';
 import type { Service, Product, PromotedItemIdentifier, ActionResponse } from '@/lib/types';
@@ -12,17 +13,14 @@ import { ArrowLeft, PlusCircle, Trash2, Loader2, Tag, Megaphone } from 'lucide-r
 import { useToast } from '@/hooks/use-toast';
 import React, { useTransition, useEffect, useState } from 'react';
 import { useActionState } from 'react';
-import { addPromotionAction, removePromotionAction } from '../actions'; // Corrected import path
+import { addPromotionAction, removePromotionAction } from '../actions'; 
 
 const initialActionState: ActionResponse = { success: false };
 
 export default function ManagePromotionsPage() {
   const { toast } = useToast();
-  const [isPending, startTransition] = useTransition();
   
-  // State for add promotion action
   const [addState, addAction, isAddPending] = useActionState(addPromotionAction, initialActionState);
-  // State for remove promotion action
   const [removeState, removeAction, isRemovePending] = useActionState(removePromotionAction, initialActionState);
 
   const [promotedItems, setPromotedItems] = useState<PromotedItemIdentifier[]>(currentPromotedItems);
@@ -30,7 +28,6 @@ export default function ManagePromotionsPage() {
   const [products, setProducts] = useState<Product[]>(allProducts);
 
   useEffect(() => {
-    // This ensures local state reflects mockData if it changes due to revalidation
     setPromotedItems(currentPromotedItems);
     setServices(allServices);
     setProducts(allProducts);
@@ -38,7 +35,7 @@ export default function ManagePromotionsPage() {
 
 
   useEffect(() => {
-    if (addState.message) {
+    if (addState !== initialActionState && addState.message) {
       if (addState.success) {
         toast({ title: "Promotion Added!", description: addState.message, className: "bg-primary text-primary-foreground border-accent" });
       } else {
@@ -48,7 +45,7 @@ export default function ManagePromotionsPage() {
   }, [addState, toast]);
 
   useEffect(() => {
-    if (removeState.message) {
+     if (removeState !== initialActionState && removeState.message) {
       if (removeState.success) {
         toast({ title: "Promotion Removed!", description: removeState.message, className: "bg-primary text-primary-foreground border-accent" });
       } else {
@@ -63,15 +60,21 @@ export default function ManagePromotionsPage() {
 
   const promotedServices = promotedItems
     .filter(p => p.type === 'service')
-    .map(p => services.find(s => s.id === p.id))
-    .filter(s => s !== undefined) as Service[];
+    .map(p => {
+        const service = services.find(s => s.id === p.id);
+        return service ? { ...service, ...p } : null;
+    })
+    .filter(s => s !== null) as (Service & PromotedItemIdentifier)[];
 
   const promotedProducts = promotedItems
     .filter(p => p.type === 'product')
-    .map(p => products.find(prod => prod.id === p.id))
-    .filter(prod => prod !== undefined) as Product[];
+    .map(p => {
+        const product = products.find(prod => prod.id === p.id);
+        return product ? { ...product, ...p } : null;
+    })
+    .filter(prod => prod !== null) as (Product & PromotedItemIdentifier)[];
 
-  const isLoading = isAddPending || isRemovePending || isPending;
+  const isLoading = isAddPending || isRemovePending;
 
   return (
     <AppShell>
@@ -93,7 +96,7 @@ export default function ManagePromotionsPage() {
           <Card className="shadow-xl border-primary/30">
             <CardHeader>
               <CardTitle className="text-2xl text-accent flex items-center"><PlusCircle className="mr-3 h-7 w-7"/>Add to Promotions</CardTitle>
-              <CardDescription>Select services or products to feature on the homepage.</CardDescription>
+              <CardDescription>Select items to feature and set a discount percentage.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
@@ -103,9 +106,10 @@ export default function ManagePromotionsPage() {
                     {availableServices.map(service => (
                       <li key={service.id} className="flex items-center justify-between p-3 bg-secondary/30 rounded-md hover:bg-secondary/50 transition-colors">
                         <span>{service.name}</span>
-                        <form action={addAction}>
+                        <form action={addAction} className="flex items-center">
                             <input type="hidden" name="itemId" value={service.id} />
                             <input type="hidden" name="itemType" value="service" />
+                            <Input name="discountPercentage" type="number" placeholder="%" className="w-20 mx-2 text-base py-1 h-9" required />
                             <Button type="submit" size="sm" variant="outline" className="border-accent text-accent hover:bg-accent/10" disabled={isLoading}>
                                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Tag className="mr-2 h-4 w-4"/>}
                                 Promote
@@ -123,9 +127,10 @@ export default function ManagePromotionsPage() {
                     {availableProducts.map(product => (
                       <li key={product.id} className="flex items-center justify-between p-3 bg-secondary/30 rounded-md hover:bg-secondary/50 transition-colors">
                         <span>{product.name}</span>
-                         <form action={addAction}>
+                         <form action={addAction} className="flex items-center">
                             <input type="hidden" name="itemId" value={product.id} />
                             <input type="hidden" name="itemType" value="product" />
+                            <Input name="discountPercentage" type="number" placeholder="%" className="w-20 mx-2 text-base py-1 h-9" required />
                             <Button type="submit" size="sm" variant="outline" className="border-accent text-accent hover:bg-accent/10" disabled={isLoading}>
                                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Tag className="mr-2 h-4 w-4"/>}
                                 Promote
@@ -151,7 +156,7 @@ export default function ManagePromotionsPage() {
                   <ul className="space-y-2">
                     {promotedServices.map(service => (
                       <li key={service.id} className="flex items-center justify-between p-3 bg-red-500/10 rounded-md hover:bg-red-500/20 transition-colors">
-                        <span>{service.name}</span>
+                        <span>{service.name} <span className="font-bold text-destructive">({service.discountPercentage}% off)</span></span>
                         <form action={removeAction}>
                             <input type="hidden" name="itemId" value={service.id} />
                             <input type="hidden" name="itemType" value="service" />
@@ -171,7 +176,7 @@ export default function ManagePromotionsPage() {
                   <ul className="space-y-2">
                     {promotedProducts.map(product => (
                       <li key={product.id} className="flex items-center justify-between p-3 bg-red-500/10 rounded-md hover:bg-red-500/20 transition-colors">
-                        <span>{product.name}</span>
+                        <span>{product.name} <span className="font-bold text-destructive">({product.discountPercentage}% off)</span></span>
                         <form action={removeAction}>
                             <input type="hidden" name="itemId" value={product.id} />
                             <input type="hidden" name="itemType" value="product" />
@@ -195,4 +200,3 @@ export default function ManagePromotionsPage() {
     </AppShell>
   );
 }
-

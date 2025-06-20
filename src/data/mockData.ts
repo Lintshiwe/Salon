@@ -2,12 +2,12 @@
 import type { Service, Product, Stylist, GalleryImage, Booking, PromotedItemIdentifier } from '@/lib/types';
 
 export let services: Service[] = [
-  { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: 'R750+', duration: '60 mins', imageHint: 'haircut styling' },
+  { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: 'R750', duration: '60 mins', imageHint: 'haircut styling' },
   { id: '2', name: 'Luxury Manicure', description: 'Indulge in a pampering manicure with premium products.', price: 'R500', duration: '45 mins', imageHint: 'manicure hands' },
   { id: '3', name: 'Rejuvenating Facial', description: 'Customized facial treatment to refresh and revitalize your skin.', price: 'R1200', duration: '75 mins', imageHint: 'facial spa' },
   { id: '4', name: 'Glamour Makeup Application', description: 'Full makeup for special occasions or a night out.', price: 'R900', duration: '60 mins', imageHint: 'makeup beauty' },
   { id: '5', name: 'Deluxe Pedicure', description: 'Relax with a soothing pedicure, including massage and polish.', price: 'R650', duration: '60 mins', imageHint: 'pedicure feet' },
-  { id: '6', name: 'Hair Coloring', description: 'From subtle highlights to bold new colors, expertly applied.', price: 'R1500+', duration: '120 mins', imageHint: 'hair color' },
+  { id: '6', name: 'Hair Coloring', description: 'From subtle highlights to bold new colors, expertly applied.', price: 'R1500', duration: '120 mins', imageHint: 'hair color' },
 ];
 
 export let products: Product[] = [
@@ -46,10 +46,10 @@ export let bookings: Booking[] = [
 ];
 
 export let promotedItems: PromotedItemIdentifier[] = [
-    { id: services[0].id, type: 'service' }, 
-    { id: products[0].id, type: 'product' }, 
-    { id: services[2].id, type: 'service' }, 
-    { id: products[3].id, type: 'product' },
+    { id: services[0].id, type: 'service', discountPercentage: 15 }, 
+    { id: products[0].id, type: 'product', discountPercentage: 20 }, 
+    { id: services[2].id, type: 'service', discountPercentage: 10 }, 
+    { id: products[3].id, type: 'product', discountPercentage: 25 },
 ];
 
 // In-memory store for the homepage hero image
