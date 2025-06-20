@@ -20,10 +20,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { UploadCloud, Loader2, PackagePlus } from "lucide-react";
 import NextImage from "next/image";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useRef } from "react"; // Added useRef
 import type { Product, ActionResponse } from "@/lib/types";
 import { addProductAction } from "@/app/admin/products/actions";
-import { useFormState } from "react-dom";
+import { useActionState } from "react"; // Updated import
 
 const productFormSchema = z.object({
   name: z.string().min(3, { message: "Product name must be at least 3 characters." }),
@@ -48,8 +48,9 @@ const initialState: ActionResponse = { success: false };
 
 export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) {
   const { toast } = useToast();
-  const [state, formAction] = useFormState(addProductAction, initialState);
+  const [state, formAction, isPending] = useActionState(addProductAction, initialState); // Updated to useActionState
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.imageHint ? `https://placehold.co/600x400.png?text=${initialData.name}` : null);
+  const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -73,8 +74,11 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
       });
       form.reset({ name: "", description: "", price: "", category: "", stockStatus: 'In Stock', imageFile: null, imageHint: "" });
       setImagePreview(null);
+      if (fileInputRef.current) { // Clear file input
+        fileInputRef.current.value = "";
+      }
       if (onSubmitSuccess) onSubmitSuccess();
-    } else if (state.message && !state.success) {
+    } else if (state.message && !state.success && state !== initialState) { // Ensure state is not initial before showing error
       toast({
         variant: "destructive",
         title: "Operation Failed",
@@ -232,11 +236,13 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
                   </label>
                   <Input
                     id="imageUploadProduct"
+                    name="imageFile" // Ensure name matches FormData key
                     type="file"
                     accept="image/png, image/jpeg, image/webp, image/gif"
                     onChange={handleImageChange} 
+                    ref={fileInputRef} // Assign ref here
                     className="hidden"
-                    {...restField} 
+                    // {...restField} // Not needed if manually handling
                   />
                 </div>
               </FormControl>
@@ -245,8 +251,8 @@ export function ProductForm({ initialData, onSubmitSuccess }: ProductFormProps) 
           )}
         />
         
-        <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? (
+        <Button type="submit" size="lg" className="w-full text-xl py-7 sparkle-hover group" disabled={isPending}>
+          {isPending ? (
             <>
               <Loader2 className="mr-2 h-6 w-6 animate-spin" />
               {initialData ? "Updating Product..." : "Adding Product..."}

@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { bookings as mockBookings } from '@/data/mockData'; 
 import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react'; // Updated import
 import { updateHomepageHeroImageAction } from '@/app/admin/homepageActions';
 import type { ActionResponse } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
@@ -20,9 +20,12 @@ const initialHeroImageFormState: ActionResponse = { success: false };
 
 export default function AdminDashboardPage() {
   const { toast } = useToast();
-  const [heroImageFormState, heroImageFormAction] = useFormState(updateHomepageHeroImageAction, initialHeroImageFormState);
+  // Use useActionState from 'react'
+  const [heroImageFormState, heroImageFormAction, isHeroImageSubmitting] = useActionState(
+    updateHomepageHeroImageAction, 
+    initialHeroImageFormState
+  );
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isHeroImageSubmitting, setIsHeroImageSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -74,14 +77,6 @@ export default function AdminDashboardPage() {
     } else {
       setImagePreview(null);
     }
-  };
-
-  const handleHeroImageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsHeroImageSubmitting(true);
-    const formData = new FormData(event.currentTarget);
-    await heroImageFormAction(formData); // Directly call the action
-    setIsHeroImageSubmitting(false);
   };
 
   useEffect(() => {
@@ -212,7 +207,7 @@ export default function AdminDashboardPage() {
                     <CardDescription>Manage elements on your homepage, like the hero profile image.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleHeroImageSubmit} className="space-y-6">
+                    <form action={heroImageFormAction} className="space-y-6">
                         <div>
                             <label htmlFor="heroImage" className="block text-lg font-medium text-accent mb-2">
                                 Update Hero Profile Image
