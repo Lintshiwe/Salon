@@ -1,27 +1,11 @@
-
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground';
 import './globals.css';
-import { Pacifico, Montserrat } from 'next/font/google';
-
-const pacifico = Pacifico({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-pacifico',
-  display: 'swap',
-});
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-montserrat',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
-  title: 'Born2bBeautiful',
-  description: 'Your destination for beauty and style.',
+  title: 'Born2bBeautiful - The Beauty of Life',
+  description: 'Your destination for beautiful candles, diffusers, and soaps. Experience the beauty of life.',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
@@ -36,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${montserrat.variable} ${pacifico.variable} font-body antialiased`} suppressHydrationWarning={true}>
+      <body className="font-body antialiased" suppressHydrationWarning={true}>
         <AnimatedBackground />
         {children}
         <Toaster />

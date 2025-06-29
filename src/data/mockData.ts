@@ -1,55 +1,40 @@
-
 import type { Service, Product, Stylist, GalleryImage, Booking, PromotedItemIdentifier } from '@/lib/types';
 
-export let services: Service[] = [
-  { id: '1', name: 'Signature Haircut & Style', description: 'A personalized cut and style to perfectly suit you.', price: 'R750', duration: '60 mins', imageHint: 'haircut styling' },
-  { id: '2', name: 'Luxury Manicure', description: 'Indulge in a pampering manicure with premium products.', price: 'R500', duration: '45 mins', imageHint: 'manicure hands' },
-  { id: '3', name: 'Rejuvenating Facial', description: 'Customized facial treatment to refresh and revitalize your skin.', price: 'R1200', duration: '75 mins', imageHint: 'facial spa' },
-  { id: '4', name: 'Glamour Makeup Application', description: 'Full makeup for special occasions or a night out.', price: 'R900', duration: '60 mins', imageHint: 'makeup beauty' },
-  { id: '5', name: 'Deluxe Pedicure', description: 'Relax with a soothing pedicure, including massage and polish.', price: 'R650', duration: '60 mins', imageHint: 'pedicure feet' },
-  { id: '6', name: 'Hair Coloring', description: 'From subtle highlights to bold new colors, expertly applied.', price: 'R1500', duration: '120 mins', imageHint: 'hair color' },
-];
+export let services: Service[] = [];
 
 export let products: Product[] = [
-  { id: 'p1', name: 'Sparkle Shine Shampoo', description: 'Leaves your hair dazzlingly clean and shiny.', price: 'R280', category: 'Hair Care', stockStatus: 'In Stock', imageHint: 'shampoo bottle' },
-  { id: 'p2', name: 'Velvet Smooth Conditioner', description: 'Nourishes and detangles for silky smooth hair.', price: 'R300', category: 'Hair Care', stockStatus: 'In Stock', imageHint: 'conditioner bottle' },
-  { id: 'p3', name: 'Dream Hold Hair Spray', description: 'Keeps your style in place all day with a touchable hold.', price: 'R250', category: 'Styling', stockStatus: 'Out of Stock', imageHint: 'hairspray can' },
-  { id: 'p4', name: 'Princess Pink Nail Polish', description: 'The perfect shade of Barbie pink for your nails.', price: 'R180', category: 'Nails', stockStatus: 'In Stock', imageHint: 'nail-polish bottle' },
-  { id: 'p5', name: 'Glow Up Face Serum', description: 'A magical serum for radiant, youthful skin.', price: 'R550', category: 'Skin Care', stockStatus: 'In Stock', imageHint: 'serum skincare' },
-  { id: 'p6', name: 'Diamond Dust Body Lotion', description: 'Hydrating lotion with a subtle shimmer.', price: 'R400', category: 'Body Care', stockStatus: 'Out of Stock', imageHint: 'lotion bottle' },
+  { id: 'p1', name: 'Lavender Dreams Candle', description: 'Hand-poured soy candle with calming lavender scent for relaxation.', price: 'R280', category: 'Candles', stockStatus: 'In Stock', imageHint: 'lavender candle' },
+  { id: 'p2', name: 'Vanilla Bliss Diffuser', description: 'Premium reed diffuser with warm vanilla fragrance for your home.', price: 'R350', category: 'Diffusers', stockStatus: 'In Stock', imageHint: 'vanilla diffuser' },
+  { id: 'p3', name: 'Rose Garden Soap Bar', description: 'Luxurious handmade soap with rose petals and moisturizing oils.', price: 'R120', category: 'Soaps', stockStatus: 'Out of Stock', imageHint: 'rose soap bar' },
+  { id: 'p4', name: 'Citrus Burst Candle', description: 'Energizing citrus scented candle to brighten your day.', price: 'R260', category: 'Candles', stockStatus: 'In Stock', imageHint: 'citrus candle' },
+  { id: 'p5', name: 'Eucalyptus Mint Diffuser', description: 'Refreshing eucalyptus and mint blend for a spa-like atmosphere.', price: 'R380', category: 'Diffusers', stockStatus: 'In Stock', imageHint: 'eucalyptus diffuser' },
+  { id: 'p6', name: 'Honey Oat Soap', description: 'Gentle exfoliating soap with natural honey and oats.', price: 'R140', category: 'Soaps', stockStatus: 'In Stock', imageHint: 'honey oat soap' },
+  { id: 'p7', name: 'Jasmine Night Candle', description: 'Romantic jasmine scented candle perfect for evening relaxation.', price: 'R300', category: 'Candles', stockStatus: 'In Stock', imageHint: 'jasmine candle' },
+  { id: 'p8', name: 'Ocean Breeze Diffuser', description: 'Fresh ocean scent that brings the seaside to your home.', price: 'R320', category: 'Diffusers', stockStatus: 'Out of Stock', imageHint: 'ocean diffuser' },
+  { id: 'p9', name: 'Shea Butter Luxury Soap', description: 'Ultra-moisturizing soap enriched with pure shea butter.', price: 'R160', category: 'Soaps', stockStatus: 'In Stock', imageHint: 'shea butter soap' },
 ];
 
-export let stylists: Stylist[] = [
-  { id: 's1', name: 'Bella Sparkle', bio: 'Bella brings a touch of magic to every hairstyle. With 10 years of experience, she specializes in creative coloring and glamorous updos.', specializations: ['Creative Coloring', 'Updos', 'Bridal Hair'], imageHint: 'hairstylist portrait' },
-  { id: 's2', name: 'Ken Dazzle', bio: 'Ken is a master of precision cuts and modern styling. He loves transforming looks and making clients feel their absolute best.', specializations: ['Precision Cuts', 'Men\'s Grooming', 'Modern Styles'], imageHint: 'male stylist' },
-  { id: 's3', name: 'Daisy Glam', bio: 'Daisy is passionate about skincare and makeup. Her facials are legendary, and she can create the perfect makeup look for any occasion.', specializations: ['Luxury Facials', 'Makeup Artistry', 'Brow Shaping'], imageHint: 'makeup-artist smile' },
-];
+export let stylists: Stylist[] = [];
 
 export let galleryImages: GalleryImage[] = [
-  { id: 'g1', alt: 'Stunning blonde balayage', category: 'Recent Work', imageHint: 'blonde balayage' },
-  { id: 'g2', alt: 'Elegant bridal updo', category: 'Recent Work', imageHint: 'bridal updo' },
-  { id: 'g3', alt: 'Vibrant pink hair color', category: 'Recent Work', imageHint: 'pink hair' },
-  { id: 'g4', alt: 'Chic salon interior with pink accents', category: 'Salon Interior', imageHint: 'salon interior' },
-  { id: 'g5', alt: 'Comfortable styling stations', category: 'Salon Interior', imageHint: 'styling station' },
-  { id: 'g6', alt: 'Welcoming reception area', category: 'Salon Interior', imageHint: 'salon reception' },
-  { id: 'g7', alt: 'The Born2bBeautiful Team smiling', category: 'Team Members', imageHint: 'salon team' },
-  { id: 'g8', alt: 'Stylist performing a haircut', category: 'Team Members', imageHint: 'stylist working' },
-  { id: 'g9', alt: 'Close up of intricate nail art', category: 'Recent Work', imageHint: 'nail art' },
+  { id: 'g1', alt: 'Beautiful candle display with various scents', category: 'Recent Work', imageHint: 'candle display' },
+  { id: 'g2', alt: 'Elegant diffuser arrangement', category: 'Recent Work', imageHint: 'diffuser arrangement' },
+  { id: 'g3', alt: 'Handcrafted soap collection', category: 'Recent Work', imageHint: 'soap collection' },
+  { id: 'g4', alt: 'Cozy shop interior with pink accents', category: 'Shop Interior', imageHint: 'shop interior' },
+  { id: 'g5', alt: 'Product display shelves', category: 'Shop Interior', imageHint: 'product shelves' },
+  { id: 'g6', alt: 'Welcoming entrance area', category: 'Shop Interior', imageHint: 'shop entrance' },
+  { id: 'g7', alt: 'Candle making process', category: 'Behind the Scenes', imageHint: 'candle making' },
+  { id: 'g8', alt: 'Soap crafting workspace', category: 'Behind the Scenes', imageHint: 'soap making' },
+  { id: 'g9', alt: 'Gift packaging and presentation', category: 'Recent Work', imageHint: 'gift packaging' },
 ];
 
-export let bookings: Booking[] = [
-  { id: 'b1', serviceName: 'Signature Haircut & Style', clientName: 'Barbie Malibu', date: '2024-07-15', time: '10:00 AM', status: 'Confirmed' },
-  { id: 'b2', serviceName: 'Luxury Manicure', clientName: 'Skipper Roberts', date: '2024-07-16', time: '02:00 PM', status: 'Pending' },
-  { id: 'b3', serviceName: 'Rejuvenating Facial', clientName: 'Midge Hadley', date: '2024-07-18', time: '11:30 AM', status: 'Completed' },
-  { id: 'b4', serviceName: 'Glamour Makeup Application', clientName: 'Teresa Rivera', date: '2024-07-20', time: '01:00 PM', status: 'Confirmed' },
-  { id: 'b5', serviceName: 'Deluxe Pedicure', clientName: 'Raquelle', date: '2024-07-22', time: '03:30 PM', status: 'Cancelled' },
-];
+export let bookings: Booking[] = [];
 
 export let promotedItems: PromotedItemIdentifier[] = [
-    { id: services[0].id, type: 'service', discountPercentage: 15 }, 
     { id: products[0].id, type: 'product', discountPercentage: 20 }, 
-    { id: services[2].id, type: 'service', discountPercentage: 10 }, 
+    { id: products[1].id, type: 'product', discountPercentage: 15 }, 
     { id: products[3].id, type: 'product', discountPercentage: 25 },
+    { id: products[6].id, type: 'product', discountPercentage: 10 },
 ];
 
 // In-memory store for the homepage hero image

@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Menu, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,10 +6,8 @@ import type { NavItem } from '@/lib/types';
 
 const navItems: NavItem[] = [
   { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
   { label: 'Products', href: '/products' },
   { label: 'Gallery', href: '/gallery' },
-  { label: 'Stylists', href: '/stylists' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -25,7 +22,7 @@ export function Header() {
               Born2bBeautiful
             </span>
             <p className="text-xs text-accent tracking-widest -mt-1">
-              Nail & Beauty Salon
+              The Beauty of Life
             </p>
           </div>
         </Link>

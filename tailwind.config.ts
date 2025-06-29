@@ -10,9 +10,23 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['var(--font-montserrat)', 'sans-serif'],
-        headline: ['var(--font-pacifico)', 'cursive'],
+        body: ['Arial', 'sans-serif'],
+        headline: ['Arial', 'sans-serif'],
         code: ['monospace'],
+      },
+      fontSize: {
+        'base': '12px',
+        'sm': '11px',
+        'xs': '10px',
+        'lg': '14px',
+        'xl': '16px',
+        '2xl': '18px',
+        '3xl': '20px',
+        '4xl': '24px',
+        '5xl': '28px',
+        '6xl': '32px',
+        '7xl': '36px',
+        '8xl': '40px',
       },
       colors: {
         background: 'hsl(var(--background))',

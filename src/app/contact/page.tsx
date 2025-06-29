@@ -1,4 +1,3 @@
-
 "use client"; 
 
 import { AppShell } from '@/components/layout/AppShell';
@@ -9,18 +8,18 @@ import { Phone, Mail, MapPin, CreditCard, Clock } from 'lucide-react';
 
 export default function ContactPage() {
   const searchParams = useSearchParams();
-  const initialService = searchParams.get('service') || undefined;
+  const initialProduct = searchParams.get('product') || undefined;
 
   return (
     <AppShell>
       <PageHeader 
         title="Contact Us"
-        description="Have questions, want to book an appointment, or just say hello? Reach out to us! We're excited to connect with you and help you on your beauty journey."
+        description="Have questions about our products or want to place an order? Reach out to us! We're excited to help you experience The Beauty of Life."
       />
       <div className="container py-12 md:py-16">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
           <div className="content-animate-in animate-in fade-in slide-in-from-left-10 duration-500">
-            <ContactFormComponent initialService={initialService} />
+            <ContactFormComponent initialService={initialProduct} />
           </div>
           <div className="space-y-6 content-animate-in animate-in fade-in slide-in-from-right-10 duration-500 delay-200">
             <h2 className="font-headline text-4xl text-primary mb-6">Our Details</h2>
@@ -79,7 +78,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-2xl font-semibold text-primary mb-1">Payment Info</h3>
                 <p className="text-lg text-foreground/80">
-                  We gladly accept cash payments for all our magical services and products.
+                  We gladly accept cash payments for all our beautiful products.
                 </p>
               </div>
             </div>

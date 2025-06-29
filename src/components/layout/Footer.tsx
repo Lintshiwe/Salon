@@ -1,4 +1,3 @@
-
 import Link from 'next/link';
 import { Facebook, Instagram, Twitter, Sparkles } from 'lucide-react';
 
@@ -29,7 +28,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-center md:text-left">
-              Experience the magic of beauty. <br />
+              The Beauty of Life <br />
               Locations in Pretoria & Tembisa.
             </p>
           </div>
@@ -37,10 +36,8 @@ export function Footer() {
           <div className="flex flex-col items-center">
             <h3 className="font-headline text-xl text-primary mb-3">Quick Links</h3>
             <ul className="space-y-2 text-center">
-              <li><Link href="/services" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Services</Link></li>
               <li><Link href="/products" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Products</Link></li>
               <li><Link href="/gallery" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Gallery</Link></li>
-              <li><Link href="/stylists" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Stylists</Link></li>
               <li><Link href="/contact" className="hover:text-primary transition-colors duration-300 ease-out sparkle-hover">Contact</Link></li>
             </ul>
           </div>
@@ -56,7 +53,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Born2bBeautiful. All rights reserved. Designed with PureBeauty💖.</p>
+          <p>&copy; {new Date().getFullYear()} Born2bBeautiful. All rights reserved. The Beauty of Life💖.</p>
         </div>
       </div>
     </footer>

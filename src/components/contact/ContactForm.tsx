@@ -61,7 +61,7 @@ export function ContactFormComponent({ initialService }: ContactFormProps) {
         <Sparkles className="h-12 w-12 mx-auto text-primary mb-4 animate-pulse" />
         <CardTitle className="font-headline text-4xl text-primary">Get In Touch!</CardTitle>
         <CardDescription className="text-lg text-foreground/70">
-          We'd love to hear from you. Send us a message or book an appointment.
+          We'd love to hear from you. Send us a message about our products or place an order.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -74,7 +74,7 @@ export function ContactFormComponent({ initialService }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="text-lg text-accent">Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Barbie Doll" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
+                    <Input placeholder="Your Name" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,7 +87,7 @@ export function ContactFormComponent({ initialService }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="text-lg text-accent">Email Address</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="barbie@dreamhouse.com" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
+                    <Input type="email" placeholder="your.email@example.com" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,7 +100,7 @@ export function ContactFormComponent({ initialService }: ContactFormProps) {
                 <FormItem>
                   <FormLabel className="text-lg text-accent">Subject</FormLabel>
                   <FormControl>
-                    <Input placeholder="Booking Inquiry" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
+                    <Input placeholder="Product Inquiry" {...field} className="text-lg py-6 focus:border-primary focus:ring-primary" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,7 +114,7 @@ export function ContactFormComponent({ initialService }: ContactFormProps) {
                   <FormLabel className="text-lg text-accent">Your Message</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Tell us how we can make your day beautiful..."
+                      placeholder="Tell us about the products you're interested in or any questions you have..."
                       {...field}
                       className="text-lg min-h-[150px] focus:border-primary focus:ring-primary"
                     />

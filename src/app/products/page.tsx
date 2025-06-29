@@ -1,4 +1,3 @@
-
 import { AppShell } from '@/components/layout/AppShell';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProductItem } from '@/components/products/ProductItem';
@@ -8,8 +7,8 @@ export default function ProductsPage() {
   return (
     <AppShell>
       <PageHeader 
-        title="Shop Our Glam Essentials"
-        description="Bring the Born2bBeautiful experience home with our handpicked selection of premium beauty products. Shine bright every day!"
+        title="Shop Our Beautiful Collection"
+        description="Discover our handcrafted candles, diffusers, and soaps. Each product is made with love to bring The Beauty of Life into your home."
       />
       <div className="container py-12 md:py-16">
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 content-animate-in">

@@ -1,34 +1,28 @@
 import { AppShell } from '@/components/layout/AppShell';
 import { EnhancedHeroSection } from '@/components/ui/enhanced-hero';
-import { services, products, promotedItems as staticPromotedItems, getHeroImageSrc } from '@/data/mockData';
-import type { Service, Product } from '@/lib/types';
+import { products, promotedItems as staticPromotedItems, getHeroImageSrc } from '@/data/mockData';
+import type { Product } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowRight, ShoppingBag, Sparkles, Wand2, PackageX, PhoneCall, Star, Heart, Crown, Gem } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Sparkles, Wand2, PackageX, PhoneCall, Star, Heart, Crown, Gem, Flame } from 'lucide-react';
 import { Badge } from "@/components/ui/badge"
 
 export default function Home() {
-  const featuredServices = services.slice(0, 3);
   const featuredProducts = products.slice(0, 3);
   const heroImageOverride = getHeroImageSrc(); 
 
   const activePromotedItems = staticPromotedItems.map(promo => {
-    if (promo.type === 'service') {
-      const service = services.find(s => s.id === promo.id);
-      return service ? { ...service, type: 'service' as const, discountPercentage: promo.discountPercentage } : null;
-    } else {
-      const product = products.find(p => p.id === promo.id);
-      return product ? { ...product, type: 'product' as const, discountPercentage: promo.discountPercentage } : null;
-    }
-  }).filter(item => item !== null) as Array<(Service & {type: 'service', discountPercentage?: number}) | (Product & {type: 'product', discountPercentage?: number})>;
+    const product = products.find(p => p.id === promo.id);
+    return product ? { ...product, type: 'product' as const, discountPercentage: promo.discountPercentage } : null;
+  }).filter(item => item !== null) as Array<Product & {type: 'product', discountPercentage?: number}>;
 
   return (
     <AppShell>
       <EnhancedHeroSection heroImageOverride={heroImageOverride} />
       
-      {/* Enhanced Services Section */}
+      {/* Enhanced Products Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-secondary/30 via-background to-primary/10 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ec4899" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
         <div className="container relative z-10">
@@ -38,52 +32,50 @@ export default function Home() {
                 <Crown className="h-12 w-12 text-primary" />
               </div>
             </div>
-            <h2 className="font-headline text-4xl md:text-6xl text-primary mb-4">Our Signature Services</h2>
+            <h2 className="font-headline text-4xl md:text-6xl text-primary mb-4">Our Featured Products</h2>
             <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-              Indulge in our most popular treatments, crafted for pure bliss and stunning results.
+              Discover our handcrafted candles, diffusers, and soaps designed to bring beauty into your life.
             </p>
             <div className="flex justify-center mt-6 space-x-2">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="h-6 w-6 text-yellow-500 fill-current" />
               ))}
-              <span className="ml-2 text-lg font-semibold text-foreground/80">5.0 Rating</span>
+              <span className="ml-2 text-lg font-semibold text-foreground/80">Premium Quality</span>
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-8 content-animate-in">
-            {featuredServices.map((service, index) => (
-              <Card key={service.id} className="overflow-hidden shadow-2xl hover:shadow-[0_0_40px_10px_hsla(var(--primary)/0.3)] transition-all duration-500 ease-out transform hover:-translate-y-2 bg-gradient-to-br from-card via-card to-primary/5 border-2 border-transparent hover:border-primary/30 group" style={{ animationDelay: `${index * 200}ms` }}>
+            {featuredProducts.map((product, index) => (
+              <Card key={product.id} className="overflow-hidden shadow-2xl hover:shadow-[0_0_40px_10px_hsla(var(--primary)/0.3)] transition-all duration-500 ease-out transform hover:-translate-y-2 bg-gradient-to-br from-card via-card to-primary/5 border-2 border-transparent hover:border-primary/30 group" style={{ animationDelay: `${index * 200}ms` }}>
                 <CardHeader className="p-0 relative">
                   <Image 
                     src={`https://placehold.co/600x400.png`}
-                    alt={service.name}
+                    alt={product.name}
                     width={600}
                     height={400}
                     className="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-110"
-                    data-ai-hint={service.imageHint}
+                    data-ai-hint={product.imageHint}
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
                     <Sparkles className="h-6 w-6 text-primary animate-pulse" />
                   </div>
+                  {product.stockStatus === 'Out of Stock' && (
+                    <Badge variant="destructive" className="absolute top-2 left-2 text-sm px-3 py-1.5">Out of Stock</Badge>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </CardHeader>
                 <CardContent className="p-6 relative">
-                  <CardTitle className="text-2xl font-semibold text-accent mb-3 group-hover:text-primary transition-colors">{service.name}</CardTitle>
-                  <CardDescription className="text-foreground/70 mb-4 h-20 overflow-hidden leading-relaxed">{service.description}</CardDescription>
-                  <div className="flex justify-between items-center">
-                    <p className="text-3xl font-bold text-primary">{service.price.startsWith('R') ? service.price : `R${service.price}`}</p>
-                    {service.duration && (
-                      <div className="bg-secondary/80 backdrop-blur-sm px-3 py-1 rounded-full">
-                        <p className="text-sm text-muted-foreground">{service.duration}</p>
-                      </div>
-                    )}
-                  </div>
+                  <CardTitle className="text-2xl lg:text-3xl font-semibold text-accent mb-3 group-hover:text-primary transition-colors">{product.name}</CardTitle>
+                  <p className="text-sm text-muted-foreground mb-2">{product.category}</p>
+                  <CardDescription className="text-foreground/75 mb-4 text-base leading-relaxed h-20 overflow-hidden">{product.description}</CardDescription>
+                  <p className="text-3xl font-bold text-primary mt-auto">{product.price.startsWith('R') ? product.price : `R${product.price}`}</p>
                 </CardContent>
                 <CardFooter className="p-6 pt-0">
-                  <Button asChild variant="outline" className="w-full sparkle-hover border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground group/btn transition-all duration-300 ease-out py-6 text-lg shadow-lg">
-                    <Link href={`/booking?service=${encodeURIComponent(service.name)}&price=${encodeURIComponent(service.price)}&duration=${encodeURIComponent(service.duration || '')}`}>
-                      Book Service 
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform"/>
-                    </Link>
+                  <Button 
+                    className="w-full text-lg py-6 group/button sparkle-hover transition-all duration-300 ease-out"
+                    disabled={product.stockStatus === 'Out of Stock'}
+                  >
+                    {product.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
+                    {product.stockStatus === 'Out of Stock' ? <PackageX className="ml-2 h-5 w-5"/> : <PhoneCall className="ml-2 h-5 w-5 group-hover/button:animate-pulse"/>}
                   </Button>
                 </CardFooter>
               </Card>
@@ -106,9 +98,9 @@ export default function Home() {
                   <Wand2 className="h-16 w-16 text-white animate-magical-pulse" />
                 </div>
               </div>
-              <h2 className="font-headline text-4xl md:text-6xl text-primary mb-4">Magical Deals & Delights</h2>
+              <h2 className="font-headline text-4xl md:text-6xl text-primary mb-4">Special Offers</h2>
               <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-                Discover enchanting offers and must-have items, handpicked to make you sparkle!
+                Discover enchanting offers on our premium products, handpicked to make your space beautiful!
               </p>
               <div className="flex justify-center mt-6">
                 <div className="bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 shadow-lg">
@@ -144,7 +136,7 @@ export default function Home() {
                           </div>
                         </div>
                       )}
-                      {item.type === 'product' && item.stockStatus === 'Out of Stock' && (
+                      {item.stockStatus === 'Out of Stock' && (
                         <div className="absolute top-3 left-3 z-10">
                           <Badge variant="destructive" className="text-sm px-3 py-1.5">Out of Stock</Badge>
                         </div>
@@ -165,36 +157,20 @@ export default function Home() {
                         <p className="text-2xl font-bold text-primary mb-3">{item.price.startsWith('R') ? item.price : `R${item.price}`}</p>
                       )}
 
-                      {item.type === 'service' && 'duration' in item && item.duration && (
-                        <div className="bg-secondary/80 backdrop-blur-sm px-3 py-1 rounded-full inline-block mb-2">
-                          <p className="text-xs text-muted-foreground">{item.duration}</p>
-                        </div>
-                      )}
-                      {item.type === 'product' && 'category' in item && item.category && (
-                        <div className="bg-secondary/80 backdrop-blur-sm px-3 py-1 rounded-full inline-block mb-2">
-                          <p className="text-xs text-muted-foreground">{item.category}</p>
-                        </div>
-                      )}
+                      <div className="bg-secondary/80 backdrop-blur-sm px-3 py-1 rounded-full inline-block mb-2">
+                        <p className="text-xs text-muted-foreground">{item.category}</p>
+                      </div>
                     </CardContent>
                     <CardFooter className="p-6 pt-0">
-                      {item.type === 'service' ? (
-                        <Button asChild size="lg" className="w-full sparkle-hover group/btn transition-all duration-300 ease-out shadow-lg">
-                          <Link href={`/booking?service=${encodeURIComponent(item.name)}&price=${encodeURIComponent(discountedPrice.toFixed(2))}&duration=${encodeURIComponent('duration' in item ? item.duration || '' : '')}`}>
-                            Book Now 
-                            <ArrowRight className="ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform"/>
-                          </Link>
-                        </Button>
-                      ) : (
-                        <Button 
-                          size="lg" 
-                          className="w-full sparkle-hover group/btn transition-all duration-300 ease-out shadow-lg"
-                          disabled={item.stockStatus === 'Out of Stock'}
-                        >
-                          {item.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
-                          {item.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
-                          {item.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-5 w-5"/>}
-                        </Button>
-                      )}
+                      <Button 
+                        size="lg" 
+                        className="w-full sparkle-hover group/btn transition-all duration-300 ease-out shadow-lg"
+                        disabled={item.stockStatus === 'Out of Stock'}
+                      >
+                        {item.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
+                        {item.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
+                        {item.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-5 w-5"/>}
+                      </Button>
                     </CardFooter>
                   </Card>
                 )
@@ -203,66 +179,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      {/* Enhanced Products Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-background via-secondary/20 to-accent/10 relative">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ec4899" fill-opacity="0.03"%3E%3Cpath d="M20 20c0 11.046-8.954 20-20 20v20h40V20H20z"/%3E%3C/g%3E%3C/svg%3E')] opacity-50"></div>
-        <div className="container relative z-10">
-          <div className="text-center mb-16">
-            <div className="flex justify-center mb-6">
-              <div className="bg-white/80 backdrop-blur-sm rounded-full p-4 shadow-xl">
-                <ShoppingBag className="h-12 w-12 text-primary" />
-              </div>
-            </div>
-            <h2 className="font-headline text-4xl md:text-6xl text-primary mb-4">Shop Our Favorites</h2>
-            <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto">
-              Take home a piece of Born2bBeautiful magic with our curated product selection.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 content-animate-in">
-            {featuredProducts.map((product, index) => (
-              <Card key={product.id} className="overflow-hidden shadow-2xl hover:shadow-[0_0_40px_10px_hsla(var(--primary)/0.3)] transition-all duration-500 ease-out transform hover:-translate-y-2 bg-gradient-to-br from-card via-card to-accent/5 border-2 border-transparent hover:border-accent/30 group" style={{ animationDelay: `${index * 200}ms` }}>
-                <CardHeader className="p-0 relative">
-                  <Image 
-                    src={`https://placehold.co/600x400.png`}
-                    alt={product.name}
-                    width={600}
-                    height={400}
-                    className="w-full h-56 object-cover transition-transform duration-700 group-hover:scale-110"
-                    data-ai-hint={product.imageHint}
-                  />
-                  {product.stockStatus === 'Out of Stock' && (
-                    <div className="absolute top-3 left-3 z-10">
-                      <Badge variant="destructive" className="text-sm px-3 py-1.5">Out of Stock</Badge>
-                    </div>
-                  )}
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                    <Heart className="h-6 w-6 text-red-500 fill-current animate-pulse" />
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <CardTitle className="text-2xl font-semibold text-accent mb-3 group-hover:text-primary transition-colors">{product.name}</CardTitle>
-                  <div className="bg-secondary/80 backdrop-blur-sm px-3 py-1 rounded-full inline-block mb-3">
-                    <p className="text-sm text-muted-foreground">{product.category}</p>
-                  </div>
-                  <CardDescription className="text-foreground/70 mb-4 h-16 overflow-hidden leading-relaxed">{product.description}</CardDescription>
-                  <p className="text-3xl font-bold text-primary">{product.price.startsWith('R') ? product.price : `R${product.price}`}</p>
-                </CardContent>
-                <CardFooter className="p-6 pt-0">
-                  <Button 
-                    className="w-full sparkle-hover group/btn transition-all duration-300 ease-out py-6 text-lg shadow-lg"
-                    disabled={product.stockStatus === 'Out of Stock'}
-                  >
-                    {product.stockStatus === 'Out of Stock' ? 'Out of Stock' : 'Call to Purchase'}
-                    {product.stockStatus === 'In Stock' && <PhoneCall className="ml-2 h-5 w-5 group-hover/btn:animate-pulse"/>}
-                    {product.stockStatus === 'Out of Stock' && <PackageX className="ml-2 h-5 w-5"/>}
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Enhanced CTA Section */}
       <section className="py-16 md:py-24 bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground relative overflow-hidden">
@@ -276,9 +192,9 @@ export default function Home() {
               <Sparkles className="h-16 w-16 text-white animate-bounce" />
             </div>
           </div>
-          <h2 className="font-headline text-4xl md:text-6xl mb-6">Ready to Be Pampered?</h2>
+          <h2 className="font-headline text-4xl md:text-6xl mb-6">Ready to Experience The Beauty of Life?</h2>
           <p className="text-xl md:text-2xl mb-10 max-w-2xl mx-auto leading-relaxed">
-            Book your appointment today and let our expert stylists transform your look and lift your spirits.
+            Contact us today to discover our beautiful collection of candles, diffusers, and soaps that will transform your space.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button asChild size="lg" variant="outline" className="text-lg px-10 py-7 bg-white text-primary hover:bg-pink-100 border-2 border-white sparkle-hover transform hover:scale-105 transition-all duration-300 group shadow-2xl">
