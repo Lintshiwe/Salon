@@ -1,4 +1,3 @@
-
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -75,6 +74,9 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      backdropBlur: {
+        xs: '2px',
+      },
       keyframes: {
         'accordion-down': {
           from: {
@@ -130,6 +132,34 @@ export default {
         'sparkle-subtle': {
           '0%, 100%': { transform: 'scale(0.9) rotate(0deg)', opacity: '0.6' },
           '50%': { transform: 'scale(1.2) rotate(10deg)', opacity: '1' },
+        },
+        'gradient-shift': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'bounce-gentle': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'scale-in': {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'slide-in-right': {
+          '0%': { opacity: '0', transform: 'translateX(30px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(236, 72, 153, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(236, 72, 153, 0.6)' },
         }
       },
       animation: {
@@ -144,6 +174,22 @@ export default {
         'gentle-float': 'gentle-float 4s ease-in-out infinite alternate',
         'subtle-rotate': 'subtle-rotate 3s ease-in-out infinite alternate',
         'sparkle-subtle': 'sparkle-subtle 2.5s ease-in-out infinite alternate',
+        'gradient-shift': 'gradient-shift 3s ease-in-out infinite',
+        'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
+        'wiggle': 'wiggle 1s ease-in-out infinite',
+        'fade-in-up': 'fade-in-up 0.6s ease-out',
+        'scale-in': 'scale-in 0.5s ease-out',
+        'slide-in-right': 'slide-in-right 0.6s ease-out',
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      boxShadow: {
+        'glow': '0 0 20px rgba(236, 72, 153, 0.3)',
+        'glow-lg': '0 0 40px rgba(236, 72, 153, 0.4)',
+        'inner-glow': 'inset 0 0 20px rgba(236, 72, 153, 0.2)',
       },
     },
   },
