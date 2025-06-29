@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { ArrowRight, ShoppingBag, Sparkles, Wand2, PackageX, PhoneCall, Star, Heart, Crown, Gem, Flame } from 'lucide-react';
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   const featuredProducts = products.slice(0, 3);
